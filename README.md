@@ -1,5 +1,7 @@
 # 1 KB Cache: RTL to Signoff (45 nm)
 
+[![regression](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/ci.yml/badge.svg)](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/ci.yml)
+
 A 1 KB direct-mapped, write-through cache taken from Verilog RTL to a DRC-clean, LVS-correct layout in FreePDK45,
 with a full verification stack (UVM, SVA, formal, LEC, gate-level/SDF simulation) and design-for-test (scan, ATPG, MBIST).
 
@@ -49,6 +51,14 @@ An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle
 | `layout/` | Innovus script (MMMC corners, power stripes), antenna LEF generator, IR-drop grid solver, ERC deck, signoff pipeline |
 | `dft/` | Scan insertion, Modus ATPG flow, pattern simulation, MBIST (controller, fault-injecting memory, testbench) |
 | `docs/figures/` | Figures from the report |
+
+## Run it yourself (open-source tools only)
+
+```bash
+ci/regress.sh all     # Icarus Verilog + SymbiYosys: testbench (original and clock-gated), MBIST, formal bmc/prove/cover/bug4
+```
+
+The same script runs in GitHub Actions on every push (badge above). The Cadence flows (synthesis, layout, signoff, ATPG) need a licensed install.
 
 ## Tools
 
