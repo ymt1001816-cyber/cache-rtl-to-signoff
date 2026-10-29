@@ -1,5 +1,5 @@
 // cache_env.sv : the whole testbench: CPU agent + memory responder + scoreboard + coverage
-// class cache_env extends uvm_env;
+class cache_env extends uvm_env;
   `uvm_component_utils(cache_env)
 
   cpu_agent        agt;

@@ -1,5 +1,6 @@
 // cache_item.sv : one CPU request (read or write) = one UVM transaction
-// class cache_item extends uvm_sequence_item;
+// 
+class cache_item extends uvm_sequence_item;
 
   rand bit [15:0] addr;      // CPU byte address
   rand bit [31:0] wdata;     // write data (unused for reads)
