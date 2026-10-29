@@ -19,9 +19,10 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 | Timing | Passes SS / TT / FF corners at 100 MHz (SS setup +1.10 ns, worst hold +0.24 ns) |
 | Power integrity | IR drop 6.1% → 2.2% after adding metal6 stripes; EM 0.50 MA/cm² (limit 1.8) |
 | Extra signoff | Antenna clean (SKY130 ratios), custom Calibre ERC clean |
-| DFT | Scan insertion script, 1–32 chains: 99.99% stuck-at coverage; 32 chains cut tester cycles 31× (11.1 M → 0.35 M); patterns verified in gate-level simulation (0 miscompares; a planted defect gives 151 failing tests) |
+| DFT | Scan insertion script, 1–32 chains: 99.99% stuck-at coverage; 32 chains cut tester cycles 31× (11.1 M → 0.35 M); patterns verified in gate-level simulation (0 miscompares; a planted defect gives 151 failing tests); transition faults: launch-on-capture 66.6%, launch-on-shift 70.9% with 41% fewer patterns |
 | MBIST | March C- controller (10N = 2,561 cycles) catches stuck-at, transition, coupling and address-decoder faults |
-| Power | 33.8 mW with real switching activity; 98% follows the clock → latch-based clock gating in RTL |
+| Power | 33.8 mW with real switching activity, 98% of it following the clock |
+| Clock gating | Latch-based clock gates in RTL (one per word): cells −50%, area −38%, real-activity power −70% (13.9 → 4.1 mW) at synthesis; same testbench passes; LEC equivalent incl. 256 latches |
 
 ## Bugs that only signoff found
 
