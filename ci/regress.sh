@@ -1,6 +1,6 @@
 #!/bin/bash
 # regress.sh : open-source regression (Icarus Verilog + SymbiYosys); exits non-zero if any check fails
-#   usage: ci/regress.sh [sim|sim_cg|mbist|axi|formal|all]      (default all)
+#   usage: ci/regress.sh [sim|sim_cg|mbist|dft|axi|formal|all]      (default all)
 cd "$(dirname "$0")/.."; mkdir -p build; fails=0
 check() {   # check <name> <log> <pattern that must appear>
   if grep -q "$3" "$2"; then echo "PASS  $1"; else echo "FAIL  $1  (see $2)"; fails=$((fails+1)); fi
@@ -17,6 +17,11 @@ if [[ $what == sim_cg || $what == all ]]; then run_sim sim_cg cache_top_cg rtl/c
 if [[ $what == mbist || $what == all ]]; then
   iverilog -g2012 -o build/mbist.vvp dft/mbist/mem_fault.sv dft/mbist/mbist_march.v dft/mbist/tb_mbist.sv && vvp -n build/mbist.vvp > build/mbist.log
   check "mbist: March C- finds 5 injected memory faults" build/mbist.log "ALL 6 PASSED"
+fi
+if [[ $what == dft || $what == all ]]; then
+  iverilog -g2012 -o build/dft.vvp rtl/cache_top_dft.v rtl/clk_gate_te.v dft/mbist/mbist_march.v dft/tb_dft.sv && (cd build && vvp -n dft.vvp > dft.log)
+  check "dft: test_en opens the clock gates, MBIST passes on the data array and finds a broken clock gate" build/dft.log "ALL DFT CHECKS PASSED"
+  run_sim sim_dft cache_top rtl/cache_top_dft.v rtl/clk_gate_te.v dft/mbist/mbist_march.v dft/cache_top_wrap.v
 fi
 if [[ $what == axi || $what == all ]]; then
   iverilog -g2012 -o build/axi.vvp rtl/cache_top.v axi/axil_cache.v axi/tb_axil_cache.sv && vvp -n build/axi.vvp > build/axi.log

@@ -4,12 +4,24 @@
 # usage: python3 insert_scan.py in.v out.v [N]
 #   N = 1 (default): ports scan_in / scan_out
 #   N > 1          : ports scan_in_0..N-1 / scan_out_0..N-1, flops split into N equal chains
+# Falling-edge flops (DFFNEGX1) never share a chain with rising-edge flops: in a rising-then-falling clock pulse,
+# a falling-edge flop right after a rising-edge flop would take the value that just arrived (data moves 2 places).
+# So the falling-edge flops get their own chains (the first chains), the rising-edge flops the rest.
 import re, sys
 src = open(sys.argv[1]).read()
 N = int(sys.argv[3]) if len(sys.argv) > 3 else 1
-FF = ('DFFPOSX1', 'DFFSR')                 # posedge flops (one clock domain)
+FF = ('DFFPOSX1', 'DFFSR', 'DFFNEGX1')     # DFFNEGX1 = falling edge (Genus uses it behind a NAND clock gate)
 pat = re.compile(r'(\b(?:%s)\s+)(\\\S+\s|\w+)(\s*\()(.*?)(\);)' % '|'.join(FF), re.S)
-total = len(pat.findall(src))
+kinds = [m[0].strip() for m in pat.findall(src)]           # cell name of every flop, in netlist order
+total = len(kinds); n_neg = kinds.count('DFFNEGX1'); n_pos = total - n_neg
+c_neg = 0 if n_neg == 0 else max(1, min(N - (1 if n_pos else 0), round(N * n_neg / total)))   # chains for falling-edge flops
+c_pos = N - c_neg
+if n_neg and n_pos and c_pos == 0: sys.exit('need at least 2 chains for mixed clock edges')
+seen = {'neg': 0, 'pos': 0}
+def chain_of(i):                                # falling-edge flops -> chains 0..c_neg-1, rising-edge -> c_neg..N-1
+    if kinds[i] == 'DFFNEGX1':
+        k = seen['neg']; seen['neg'] += 1; return k * c_neg // n_neg
+    k = seen['pos']; seen['pos'] += 1; return c_neg + k * c_pos // n_pos
 si_name = ['scan_in'] if N == 1 else ['scan_in_%d' % c for c in range(N)]
 so_name = ['scan_out'] if N == 1 else ['scan_out_%d' % c for c in range(N)]
 chains, new, decl, n = [[] for _ in range(N)], [], [], [0]
@@ -21,7 +33,7 @@ def pin(conn, p):
     return m.group(1).strip() if m else None
 def rew(m):
     i = n[0]; n[0] += 1
-    c = i * N // total                          # flop i goes to chain c (consecutive flops share a chain)
+    c = chain_of(i)                             # flop i goes to chain c (consecutive flops of one edge share a chain)
     chain = chains[c]
     conn = m.group(4); d = pin(conn, 'D'); q = pin(conn, 'Q')
     si = si_name[c] if not chain else chain[-1]
@@ -43,4 +55,4 @@ body = body.replace(mod.group(0), 'module cache_top (%s, %s);\n  input %s;\n  ou
 end = body.rfind('endmodule')
 body = body[:end] + ''.join(new) + ''.join('  assign %s = %s;\n' % (so_name[c], chains[c][-1]) for c in range(N)) + body[end:]
 open(sys.argv[2], 'w').write(body)
-print('scan cells inserted:', k, ' chains:', N, ' lengths:', [len(ch) for ch in chains])
+print('scan cells inserted:', k, '(falling edge %d in %d chains)' % (n_neg, c_neg), ' chains:', N, ' lengths:', [len(ch) for ch in chains])

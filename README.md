@@ -27,6 +27,8 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 | MBIST | March C- controller (10N = 2,561 cycles) catches stuck-at, transition, coupling and address-decoder faults |
 | Power | 33.8 mW with real switching activity, 98% of it following the clock |
 | Clock gating | Latch-based clock gates in RTL (one per word), taken through layout: **real-activity power 33.8 → 4.56 mW (−86%)**, chip area −47%, SS/TT/FF setup and hold pass, SDF simulation passes, LVS correct, LEC equivalent (incl. 256 latches). Open item: 314 Calibre Well.2 errors at filler-cell boundaries and 20 ERC well/net results, not seen in the same-density layout without clock gating |
+| Scan-compatible clock gating | The clock gates block scan shift: with clock gating and no test enable, 30 of 32 scan chains cannot be loaded and stuck-at coverage drops to **84.3%**. Adding a test enable to each clock gate (like an industry ICG cell) brings all 32 chains back and coverage to **99.84%** (8,659 scan cells; LEC equivalent, 8,998 points). Genus mapped the gated data flops to falling-edge flops, so the scan script keeps falling- and rising-edge flops in separate chains |
+| MBIST in the design | The March C- controller is built into the clock-gated cache and writes the real data array through the same clock gates (test mode mux); it passes in 2,561 cycles and also finds a clock gate stuck off |
 | Denser floorplan | Placement density 0.6 → 0.75: chip area −19% (274,294 → 221,402 µm²) with all signoff checks still clean |
 
 ## Bugs that only signoff found
@@ -47,7 +49,7 @@ An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle
 
 | Folder | Contents |
 |---|---|
-| `rtl/` | Cache RTL (direct-mapped, 2-way, write-back, SRAM variants, clock-gated version) |
+| `rtl/` | Cache RTL (direct-mapped, 2-way, write-back, SRAM variants, clock-gated version, DFT version with test-enable clock gates and MBIST) |
 | `verification/` | Self-checking testbench, UVM environment + SVA, SymbiYosys formal, code coverage, verification plan |
 | `model/` | Python reference model (miss counts, AMAT, DRAM energy) |
 | `synthesis/` | Genus script, constraints, SAIF power, LEC |
@@ -59,7 +61,7 @@ An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle
 ## Run it yourself (open-source tools only)
 
 ```bash
-ci/regress.sh all     # Icarus Verilog + SymbiYosys: testbench (original and clock-gated), MBIST, formal bmc/prove/cover/bug4
+ci/regress.sh all     # Icarus Verilog + SymbiYosys: testbench (original, clock-gated, DFT), MBIST, DFT test-mode checks, AXI, formal
 ```
 
 The same script runs in GitHub Actions on every push (badge above). The Cadence flows (synthesis, layout, signoff, ATPG) need a licensed install.
@@ -71,7 +73,7 @@ PDK and standard cells (FreePDK45, OSU gscl45nm) are not included. Scripts use t
 
 ## My role and AI use
 
-I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller, the AXI4-Lite wrapper, its SVA and formal properties, and the AXI UVM agent.
+I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller, the DFT version (test-enable clock gates, MBIST integration), the AXI4-Lite wrapper, its SVA and formal properties, and the AXI UVM agent.
 As allowed by the course, I used an AI assistant (Claude) to help set up the tool flows and write several scripts
-(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench, the AXI testbench) and to draft documentation.
+(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench, the DFT test-mode testbench, the AXI testbench) and to draft documentation.
 I ran, reviewed and can explain every step.
