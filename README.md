@@ -26,7 +26,8 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 | AXI UVM | AXI4-Lite master agent (driver, monitor) plugged into the original UVM environment: sequences, scoreboard and coverage reused unchanged; 3 seeds PASS (5,145–5,256 checks), 100% coverage, 0 SVA failures; a planted data bug fails all 5,145 reads |
 | MBIST | March C- controller (10N = 2,561 cycles) catches stuck-at, transition, coupling and address-decoder faults |
 | Power | 33.8 mW with real switching activity, 98% of it following the clock |
-| Clock gating | Latch-based clock gates in RTL (one per word): cells −50%, area −38%, real-activity power −70% (13.9 → 4.1 mW) at synthesis; same testbench passes; LEC equivalent incl. 256 latches |
+| Clock gating | Latch-based clock gates in RTL (one per word), taken through layout: **real-activity power 33.8 → 4.56 mW (−86%)**, chip area −47%, SS/TT/FF setup and hold pass, SDF simulation passes, LVS correct, LEC equivalent (incl. 256 latches). Open item: 314 Calibre Well.2 errors at filler-cell boundaries and 20 ERC well/net results, not seen in the same-density layout without clock gating |
+| Denser floorplan | Placement density 0.6 → 0.75: chip area −19% (274,294 → 221,402 µm²) with all signoff checks still clean |
 
 ## Bugs that only signoff found
 
