@@ -1,0 +1,7 @@
+*.log
+*.vcd
+*.fsdb
+*.shm/
+xcelium.d/
+INCA_libs/
+.DS_Store
