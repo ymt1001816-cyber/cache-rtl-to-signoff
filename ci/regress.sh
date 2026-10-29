@@ -1,6 +1,6 @@
 #!/bin/bash
 # regress.sh : open-source regression (Icarus Verilog + SymbiYosys); exits non-zero if any check fails
-#   usage: ci/regress.sh [sim|sim_cg|mbist|dft|axi|formal|all]      (default all)
+#   usage: ci/regress.sh [sim|sim_cg|mbist|dft|cocotb|axi|formal|all]      (default all)
 cd "$(dirname "$0")/.."; mkdir -p build; fails=0
 check() {   # check <name> <log> <pattern that must appear>
   if grep -q "$3" "$2"; then echo "PASS  $1"; else echo "FAIL  $1  (see $2)"; fails=$((fails+1)); fi
@@ -22,6 +22,14 @@ if [[ $what == dft || $what == all ]]; then
   iverilog -g2012 -o build/dft.vvp rtl/cache_top_dft.v rtl/clk_gate_te.v dft/mbist/mbist_march.v dft/tb_dft.sv && (cd build && vvp -n dft.vvp > dft.log)
   check "dft: test_en opens the clock gates, MBIST passes on the data array and finds a broken clock gate" build/dft.log "ALL DFT CHECKS PASSED"
   run_sim sim_dft cache_top rtl/cache_top_dft.v rtl/clk_gate_te.v dft/mbist/mbist_march.v dft/cache_top_wrap.v
+fi
+if [[ $what == cocotb || $what == all ]]; then
+  for d in base cg dft; do
+    (cd verification/cocotb && make DUT=$d > ../../build/cocotb_$d.log 2>&1)
+    check "cocotb $d: random memory latency, hit/miss reference model, coverage closed" build/cocotb_$d.log "TESTS=2 PASS=2 FAIL=0"
+  done
+  (cd verification/cocotb && make BUG=write_allocate > ../../build/cocotb_bug.log 2>&1)
+  check "cocotb bug: planted write-allocate bug is caught by the memory-traffic check" build/cocotb_bug.log "1 memory writes, 4 memory reads"
 fi
 if [[ $what == axi || $what == all ]]; then
   iverilog -g2012 -o build/axi.vvp rtl/cache_top.v axi/axil_cache.v axi/tb_axil_cache.sv && vvp -n build/axi.vvp > build/axi.log

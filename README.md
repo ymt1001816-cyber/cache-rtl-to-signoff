@@ -3,7 +3,7 @@
 [![regression](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/ci.yml/badge.svg)](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/ci.yml)
 
 A 1 KB direct-mapped, write-through cache taken from Verilog RTL to a DRC-clean, LVS-correct layout in FreePDK45,
-with a full verification stack (UVM, SVA, formal, LEC, gate-level/SDF simulation) and design-for-test (scan, ATPG, MBIST).
+with a full verification stack (UVM, cocotb, SVA, formal, LEC, gate-level/SDF simulation) and design-for-test (scan, ATPG, MBIST).
 
 Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Meiyu Kuo
 
@@ -14,6 +14,7 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 | Area | Result |
 |---|---|
 | Functional verification | UVM testbench: 100% functional coverage, 20/20 random seeds pass, 4/4 planted bugs caught |
+| cocotb | Python testbench: memory latency randomized 1–4 cycles, a Python reference model predicts every hit and miss and the scoreboard checks data **and memory traffic** (0 or 4 reads per read, exactly 1 write per write); functional coverage must close or the test fails. Same tests pass on the original, clock-gated and DFT RTL (~6,900 checks each); a planted write-allocate bug fails |
 | Formal | SymbiYosys k-induction proves no-write-allocate, bounded latency, one memory operation at a time |
 | Code coverage | Branch and expression 100%, toggle 99.2% (Verilator) |
 | Equivalence | Conformal LEC: RTL = netlist = layout netlist (8,725 points); scan netlist = RTL with scan disabled |
@@ -50,7 +51,7 @@ An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle
 | Folder | Contents |
 |---|---|
 | `rtl/` | Cache RTL (direct-mapped, 2-way, write-back, SRAM variants, clock-gated version, DFT version with test-enable clock gates and MBIST) |
-| `verification/` | Self-checking testbench, UVM environment + SVA, SymbiYosys formal, code coverage, verification plan |
+| `verification/` | Self-checking testbench, UVM environment + SVA, cocotb testbench, SymbiYosys formal, code coverage, verification plan |
 | `model/` | Python reference model (miss counts, AMAT, DRAM energy) |
 | `synthesis/` | Genus script, constraints, SAIF power, LEC |
 | `layout/` | Innovus script (MMMC corners, power stripes), antenna LEF generator, IR-drop grid solver, ERC deck, signoff pipeline |
@@ -61,19 +62,19 @@ An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle
 ## Run it yourself (open-source tools only)
 
 ```bash
-ci/regress.sh all     # Icarus Verilog + SymbiYosys: testbench (original, clock-gated, DFT), MBIST, DFT test-mode checks, AXI, formal
+ci/regress.sh all     # Icarus Verilog + SymbiYosys: testbench (original, clock-gated, DFT), cocotb, MBIST, DFT test-mode checks, AXI, formal
 ```
 
 The same script runs in GitHub Actions on every push (badge above). The Cadence flows (synthesis, layout, signoff, ATPG) need a licensed install.
 
 ## Tools
 
-Cadence Xcelium, Genus, Innovus, Conformal, Modus, Spectre · Siemens Calibre · SymbiYosys · Verilator · Icarus Verilog · OpenRAM · Python.
+Cadence Xcelium, Genus, Innovus, Conformal, Modus, Spectre · Siemens Calibre · cocotb · SymbiYosys · Verilator · Icarus Verilog · OpenRAM · Python.
 PDK and standard cells (FreePDK45, OSU gscl45nm) are not included. Scripts use the university's tool paths; adjust them for another setup.
 
 ## My role and AI use
 
-I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller, the DFT version (test-enable clock gates, MBIST integration), the AXI4-Lite wrapper, its SVA and formal properties, and the AXI UVM agent.
+I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller, the DFT version (test-enable clock gates, MBIST integration), the AXI4-Lite wrapper, its SVA and formal properties, the AXI UVM agent, and the cocotb reference model, driver, scoreboard and random test.
 As allowed by the course, I used an AI assistant (Claude) to help set up the tool flows and write several scripts
-(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench, the DFT test-mode testbench, the AXI testbench) and to draft documentation.
+(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench, the DFT test-mode testbench, the cocotb memory model, coverage and build setup, the AXI testbench) and to draft documentation.
 I ran, reviewed and can explain every step.

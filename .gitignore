@@ -8,3 +8,7 @@ INCA_libs/
 build/
 axi/formal/axil_*/
 verification/formal/cache_*/
+verification/cocotb/sim_build_*/
+verification/cocotb/results_*.xml
+verification/cocotb/bug_*.v
+__pycache__/
