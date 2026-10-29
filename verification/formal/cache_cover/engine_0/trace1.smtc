@@ -1,0 +1,29 @@
+initial
+assume (= [_witness_.anyinit_procdff_356] false)
+assume (= [_witness_.anyinit_procdff_357] false)
+assume (= [_witness_.anyinit_procdff_358] true)
+assume (= [_witness_.anyinit_procdff_359] true)
+assume (= [_witness_.anyinit_procdff_360] #b1000000000000000)
+assume (= [_witness_.anyinit_procdff_361] #b10000000000000000000000000000000)
+assume (= [dut._witness_.anyinit_procdff_333] #b0000000000000000000000000000000000000000000000000000000000000000)
+assume (= [dut._witness_.anyinit_procdff_338] #b00)
+assume (= [dut._witness_.anyinit_procdff_343] #b00)
+assume (= [f_cyc] #b00)
+assume (= [f_mem_wait] #b0000)
+assume (= (select [dut.data_arr] #b00000000) #b00000000000000000000000000000000)
+assume (= (select [dut.tag_arr] #b000000) #b110000)
+
+state 0
+assume (= [clk] false)
+
+state 1
+assume (= [clk] false)
+
+state 2
+assume (= [clk] false)
+
+state 3
+assume (= [clk] false)
+
+state 4
+assume (= [clk] false)

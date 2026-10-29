@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-10-28T22:46:35" hostname="Cindys-MacBook-Pro.local" package="cache" id="0" name="cover" tests="8" errors="0" failures="0" time="0" skipped="5">
+<properties>
+<property name="os" value="Darwin"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="cover" name="build execution" time="0">
+</testcase>
+<testcase classname="cover" name="Property ASSERT in cache_formal at cache_formal.sv:34.5-34.52" time="0" type="ASSERT" location="cache_formal.sv:34.5-34.52" id="a_no_read_on_write">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in cache_formal at cache_formal.sv:36.5-36.47" time="0" type="ASSERT" location="cache_formal.sv:36.5-36.47" id="a_one_mem_op">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in cache_formal at cache_formal.sv:35.5-35.37" time="0" type="ASSERT" location="cache_formal.sv:35.5-35.37" id="a_req_done">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property COVER in cache_formal at cache_formal.sv:44.5-44.45" time="0" type="COVER" location="cache_formal.sv:44.5-44.45" id="c_read_done" tracefile="engine_0/trace2.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in cache_formal at cache_formal.sv:46.5-46.40" time="0" type="COVER" location="cache_formal.sv:46.5-46.40" id="c_refill" tracefile="engine_0/trace1.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in cache_formal at cache_formal.sv:45.5-45.46" time="0" type="COVER" location="cache_formal.sv:45.5-45.46" id="c_write_done" tracefile="engine_0/trace0.vcd">
+</testcase>
+<testcase classname="cover" name="Property ASSERT in cache_formal at cache_formal.sv:38.5-38.62" time="0" type="ASSERT" location="cache_formal.sv:38.5-38.62" id="h_refill_is_read">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in cache_formal at cache_formal.sv:39.5-39.48" time="0" type="ASSERT" location="cache_formal.sv:39.5-39.48" id="h_wmem_is_write">
+<skipped />
+</testcase>
+<system-out>SBY 22:46:35 [cache_cover] Removing directory '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_cover'.
+SBY 22:46:35 [cache_cover] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/../../rtl/cache_top.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_cover/src/cache_top.v'.
+SBY 22:46:35 [cache_cover] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_top_bug4.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_cover/src/cache_top_bug4.v'.
+SBY 22:46:35 [cache_cover] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_formal.sv' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_cover/src/cache_formal.sv'.
+SBY 22:46:35 [cache_cover] engine_0: smtbmc yices
+SBY 22:46:35 [cache_cover] base: starting process &quot;cd cache_cover/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 22:46:35 [cache_cover] base: finished (returncode=0)
+SBY 22:46:35 [cache_cover] prep: starting process &quot;cd cache_cover/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 22:46:35 [cache_cover] prep: finished (returncode=0)
+SBY 22:46:35 [cache_cover] smt2: starting process &quot;cd cache_cover/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 22:46:35 [cache_cover] smt2: finished (returncode=0)
+SBY 22:46:35 [cache_cover] engine_0: starting process &quot;cd cache_cover; yosys-smtbmc -s yices --presat --unroll -c --noprogress -t 40  --append 0 --dump-vcd engine_0/trace%.vcd --dump-yw engine_0/trace%.yw --dump-vlogtb engine_0/trace%_tb.v --dump-smtc engine_0/trace%.smtc model/design_smt2.smt2&quot;
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Solver: yices
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Reached cover statement in step 4 at cache_formal: c_write_done
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace0.vcd
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace0_tb.v
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace0.smtc
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace0.yw
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Reached cover statement in step 4 at cache_formal: c_refill
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace1.vcd
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace1_tb.v
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace1.smtc
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace1.yw
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 5..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 6..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 7..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Checking cover reachability in step 8..
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Reached cover statement in step 8 at cache_formal: c_read_done
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace2.vcd
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace2_tb.v
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace2.smtc
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace2.yw
+SBY 22:46:35 [cache_cover] engine_0: ##   0:00:00  Status: passed
+SBY 22:46:35 [cache_cover] engine_0: finished (returncode=0)
+SBY 22:46:35 [cache_cover] engine_0: Status returned by engine: pass
+SBY 22:46:35 [cache_cover] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 22:46:35 [cache_cover] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 22:46:35 [cache_cover] summary: engine_0 (smtbmc yices) returned pass
+SBY 22:46:35 [cache_cover] summary: cover trace: cache_cover/engine_0/trace0.vcd
+SBY 22:46:35 [cache_cover] summary:   reached cover statement cache_formal.c_write_done at cache_formal.sv:45.5-45.46 step 4
+SBY 22:46:35 [cache_cover] summary: cover trace: cache_cover/engine_0/trace1.vcd
+SBY 22:46:35 [cache_cover] summary:   reached cover statement cache_formal.c_refill at cache_formal.sv:46.5-46.40 step 4
+SBY 22:46:35 [cache_cover] summary: cover trace: cache_cover/engine_0/trace2.vcd
+SBY 22:46:35 [cache_cover] summary:   reached cover statement cache_formal.c_read_done at cache_formal.sv:44.5-44.45 step 8
+SBY 22:46:35 [cache_cover] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

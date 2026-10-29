@@ -1,0 +1,8 @@
+# running in cache_bug4/src/
+read -formal cache_top_bug4.v cache_formal.sv
+prep -top cache_formal
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

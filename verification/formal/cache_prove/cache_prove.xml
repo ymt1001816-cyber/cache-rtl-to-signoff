@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-10-28T22:46:35" hostname="Cindys-MacBook-Pro.local" package="cache" id="0" name="prove" tests="8" errors="0" failures="0" time="6" skipped="3">
+<properties>
+<property name="os" value="Darwin"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="prove" name="build execution" time="0">
+</testcase>
+<testcase classname="prove" name="Property ASSERT in cache_formal at cache_formal.sv:34.5-34.52" time="0" type="ASSERT" location="cache_formal.sv:34.5-34.52" id="a_no_read_on_write">
+</testcase>
+<testcase classname="prove" name="Property ASSERT in cache_formal at cache_formal.sv:36.5-36.47" time="0" type="ASSERT" location="cache_formal.sv:36.5-36.47" id="a_one_mem_op">
+</testcase>
+<testcase classname="prove" name="Property ASSERT in cache_formal at cache_formal.sv:35.5-35.37" time="0" type="ASSERT" location="cache_formal.sv:35.5-35.37" id="a_req_done">
+</testcase>
+<testcase classname="prove" name="Property COVER in cache_formal at cache_formal.sv:44.5-44.45" time="0" type="COVER" location="cache_formal.sv:44.5-44.45" id="c_read_done">
+<skipped />
+</testcase>
+<testcase classname="prove" name="Property COVER in cache_formal at cache_formal.sv:46.5-46.40" time="0" type="COVER" location="cache_formal.sv:46.5-46.40" id="c_refill">
+<skipped />
+</testcase>
+<testcase classname="prove" name="Property COVER in cache_formal at cache_formal.sv:45.5-45.46" time="0" type="COVER" location="cache_formal.sv:45.5-45.46" id="c_write_done">
+<skipped />
+</testcase>
+<testcase classname="prove" name="Property ASSERT in cache_formal at cache_formal.sv:38.5-38.62" time="0" type="ASSERT" location="cache_formal.sv:38.5-38.62" id="h_refill_is_read">
+</testcase>
+<testcase classname="prove" name="Property ASSERT in cache_formal at cache_formal.sv:39.5-39.48" time="0" type="ASSERT" location="cache_formal.sv:39.5-39.48" id="h_wmem_is_write">
+</testcase>
+<system-out>SBY 22:30:39 [cache_prove] Removing directory '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_prove'.
+SBY 22:30:39 [cache_prove] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/../../rtl/cache_top.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_prove/src/cache_top.v'.
+SBY 22:30:39 [cache_prove] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_top_bug4.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_prove/src/cache_top_bug4.v'.
+SBY 22:30:39 [cache_prove] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_formal.sv' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_prove/src/cache_formal.sv'.
+SBY 22:30:39 [cache_prove] engine_0: smtbmc yices
+SBY 22:30:39 [cache_prove] base: starting process &quot;cd cache_prove/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 22:30:39 [cache_prove] base: finished (returncode=0)
+SBY 22:30:39 [cache_prove] prep: starting process &quot;cd cache_prove/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 22:30:39 [cache_prove] prep: finished (returncode=0)
+SBY 22:30:39 [cache_prove] smt2: starting process &quot;cd cache_prove/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 22:30:39 [cache_prove] smt2: finished (returncode=0)
+SBY 22:30:39 [cache_prove] engine_0.basecase: starting process &quot;cd cache_prove; yosys-smtbmc -s yices --presat --unroll --noprogress -t 50  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2&quot;
+SBY 22:30:39 [cache_prove] engine_0.induction: starting process &quot;cd cache_prove; yosys-smtbmc -s yices --presat --unroll -i --noprogress -t 50  --append 0 --dump-vcd engine_0/trace_induct.vcd --dump-yw engine_0/trace_induct.yw --dump-vlogtb engine_0/trace_induct_tb.v --dump-smtc engine_0/trace_induct.smtc model/design_smt2.smt2&quot;
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Solver: yices
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Solver: yices
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 0..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 50..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 0..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 49..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 1..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 1..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 48..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 2..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 2..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 3..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 3..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 47..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 4..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 4..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 46..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 5..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 5..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 45..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 6..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 6..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 44..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 7..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 7..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 43..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 8..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 8..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 9..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 42..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 9..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 10..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 41..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 10..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 40..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 11..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 11..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 12..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 39..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 38..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 12..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 13..
+SBY 22:30:39 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 37..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 13..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 14..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 14..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 15..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 15..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 16..
+SBY 22:30:39 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 16..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 17..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 17..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 18..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 18..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 19..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 19..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 20..
+SBY 22:30:40 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 36..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 20..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 21..
+SBY 22:30:40 [cache_prove] engine_0.induction: ##   0:00:00  Trying induction in step 35..
+SBY 22:30:40 [cache_prove] engine_0.induction: ##   0:00:00  Temporal induction successful.
+SBY 22:30:40 [cache_prove] engine_0.induction: ##   0:00:00  Status: passed
+SBY 22:30:40 [cache_prove] engine_0.induction: finished (returncode=0)
+SBY 22:30:40 [cache_prove] engine_0.induction: Status returned by engine for induction: pass
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 21..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 22..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 22..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 23..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 23..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 24..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 24..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 25..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 25..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 26..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 26..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 27..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 27..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assumptions in step 28..
+SBY 22:30:40 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 28..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assumptions in step 29..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 29..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assumptions in step 30..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 30..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assumptions in step 31..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 31..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assumptions in step 32..
+SBY 22:30:41 [cache_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 32..
+SBY 22:46:30 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assumptions in step 33..
+SBY 22:46:30 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assertions in step 33..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assumptions in step 34..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assertions in step 34..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assumptions in step 35..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assertions in step 35..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assumptions in step 36..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assertions in step 36..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:51  Checking assumptions in step 37..
+SBY 22:46:31 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assertions in step 37..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assumptions in step 38..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assertions in step 38..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assumptions in step 39..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assertions in step 39..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assumptions in step 40..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assertions in step 40..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:52  Checking assumptions in step 41..
+SBY 22:46:32 [cache_prove] engine_0.basecase: ##   0:15:53  Checking assertions in step 41..
+SBY 22:46:33 [cache_prove] engine_0.basecase: ##   0:15:53  Checking assumptions in step 42..
+SBY 22:46:33 [cache_prove] engine_0.basecase: ##   0:15:53  Checking assertions in step 42..
+SBY 22:46:33 [cache_prove] engine_0.basecase: ##   0:15:53  Checking assumptions in step 43..
+SBY 22:46:33 [cache_prove] engine_0.basecase: ##   0:15:53  Checking assertions in step 43..
+SBY 22:46:33 [cache_prove] engine_0.basecase: ##   0:15:53  Checking assumptions in step 44..
+SBY 22:46:33 [cache_prove] engine_0.basecase: ##   0:15:53  Checking assertions in step 44..
+SBY 22:46:33 [cache_prove] engine_0.basecase: ##   0:15:54  Checking assumptions in step 45..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:54  Checking assertions in step 45..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:54  Checking assumptions in step 46..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:54  Checking assertions in step 46..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:54  Checking assumptions in step 47..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:54  Checking assertions in step 47..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:54  Checking assumptions in step 48..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:55  Checking assertions in step 48..
+SBY 22:46:34 [cache_prove] engine_0.basecase: ##   0:15:55  Checking assumptions in step 49..
+SBY 22:46:35 [cache_prove] engine_0.basecase: ##   0:15:55  Checking assertions in step 49..
+SBY 22:46:35 [cache_prove] engine_0.basecase: ##   0:15:55  Status: passed
+SBY 22:46:35 [cache_prove] engine_0.basecase: finished (returncode=0)
+SBY 22:46:35 [cache_prove] engine_0.basecase: Status returned by engine for basecase: pass
+SBY 22:46:35 [cache_prove] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:06 (6)
+SBY 22:46:35 [cache_prove] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:06 (6)
+SBY 22:46:35 [cache_prove] summary: engine_0 (smtbmc yices) returned pass for basecase
+SBY 22:46:35 [cache_prove] summary: engine_0 (smtbmc yices) returned pass for induction
+SBY 22:46:35 [cache_prove] summary: engine_0 did not produce any traces
+SBY 22:46:35 [cache_prove] summary: successful proof by k-induction.
+SBY 22:46:35 [cache_prove] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

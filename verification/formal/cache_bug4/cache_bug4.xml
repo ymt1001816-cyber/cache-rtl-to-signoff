@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-10-28T22:46:35" hostname="Cindys-MacBook-Pro.local" package="cache" id="0" name="bug4" tests="8" errors="0" failures="2" time="0" skipped="7">
+<properties>
+<property name="os" value="Darwin"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="FAIL"/>
+</properties>
+<testcase classname="bug4" name="build execution" time="0">
+<failure type="FAIL" message="Task returned status FAIL." />
+</testcase>
+<testcase classname="bug4" name="Property ASSERT in cache_formal at cache_formal.sv:34.5-34.52" time="0" type="ASSERT" location="cache_formal.sv:34.5-34.52" id="a_no_read_on_write">
+<skipped />
+</testcase>
+<testcase classname="bug4" name="Property ASSERT in cache_formal at cache_formal.sv:36.5-36.47" time="0" type="ASSERT" location="cache_formal.sv:36.5-36.47" id="a_one_mem_op">
+<skipped />
+</testcase>
+<testcase classname="bug4" name="Property ASSERT in cache_formal at cache_formal.sv:35.5-35.37" time="0" type="ASSERT" location="cache_formal.sv:35.5-35.37" id="a_req_done" tracefile="engine_0/trace.vcd">
+<failure type="ASSERT" message="Property ASSERT in cache_formal at cache_formal.sv:35.5-35.37 failed. Trace file: engine_0/trace.vcd" />
+</testcase>
+<testcase classname="bug4" name="Property COVER in cache_formal at cache_formal.sv:44.5-44.45" time="0" type="COVER" location="cache_formal.sv:44.5-44.45" id="c_read_done">
+<skipped />
+</testcase>
+<testcase classname="bug4" name="Property COVER in cache_formal at cache_formal.sv:46.5-46.40" time="0" type="COVER" location="cache_formal.sv:46.5-46.40" id="c_refill">
+<skipped />
+</testcase>
+<testcase classname="bug4" name="Property COVER in cache_formal at cache_formal.sv:45.5-45.46" time="0" type="COVER" location="cache_formal.sv:45.5-45.46" id="c_write_done">
+<skipped />
+</testcase>
+<testcase classname="bug4" name="Property ASSERT in cache_formal at cache_formal.sv:38.5-38.62" time="0" type="ASSERT" location="cache_formal.sv:38.5-38.62" id="h_refill_is_read">
+<skipped />
+</testcase>
+<testcase classname="bug4" name="Property ASSERT in cache_formal at cache_formal.sv:39.5-39.48" time="0" type="ASSERT" location="cache_formal.sv:39.5-39.48" id="h_wmem_is_write">
+<skipped />
+</testcase>
+<system-out>SBY 22:46:35 [cache_bug4] Removing directory '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bug4'.
+SBY 22:46:35 [cache_bug4] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/../../rtl/cache_top.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bug4/src/cache_top.v'.
+SBY 22:46:35 [cache_bug4] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_top_bug4.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bug4/src/cache_top_bug4.v'.
+SBY 22:46:35 [cache_bug4] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_formal.sv' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bug4/src/cache_formal.sv'.
+SBY 22:46:35 [cache_bug4] engine_0: smtbmc yices
+SBY 22:46:35 [cache_bug4] base: starting process &quot;cd cache_bug4/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 22:46:35 [cache_bug4] base: finished (returncode=0)
+SBY 22:46:35 [cache_bug4] prep: starting process &quot;cd cache_bug4/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 22:46:35 [cache_bug4] prep: finished (returncode=0)
+SBY 22:46:35 [cache_bug4] smt2: starting process &quot;cd cache_bug4/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 22:46:35 [cache_bug4] smt2: finished (returncode=0)
+SBY 22:46:35 [cache_bug4] engine_0: starting process &quot;cd cache_bug4; yosys-smtbmc -s yices --presat --unroll --noprogress -t 80  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2&quot;
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Solver: yices
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 0..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 0..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 1..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 1..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 2..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 2..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 3..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 3..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 4..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 4..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 5..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 5..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 6..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 6..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 7..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 7..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 8..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 8..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 9..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 9..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 10..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 10..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 11..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 11..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 12..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 12..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 13..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 13..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 14..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 14..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 15..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 15..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 16..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 16..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 17..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 17..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 18..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 18..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 19..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 19..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 20..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 20..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 21..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 21..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assumptions in step 22..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Checking assertions in step 22..
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  BMC failed!
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Assert failed in cache_formal: a_req_done
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace.vcd
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace_tb.v
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace.smtc
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace.yw
+SBY 22:46:35 [cache_bug4] engine_0: ##   0:00:00  Status: failed
+SBY 22:46:35 [cache_bug4] engine_0: finished (returncode=1)
+SBY 22:46:35 [cache_bug4] engine_0: Status returned by engine: FAIL
+SBY 22:46:35 [cache_bug4] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 22:46:35 [cache_bug4] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 22:46:35 [cache_bug4] summary: engine_0 (smtbmc yices) returned FAIL
+SBY 22:46:35 [cache_bug4] summary: counterexample trace: cache_bug4/engine_0/trace.vcd
+SBY 22:46:35 [cache_bug4] summary:   failed assertion cache_formal.a_req_done at cache_formal.sv:35.5-35.37 step 22
+SBY 22:46:35 [cache_bug4] DONE (FAIL, rc=2)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

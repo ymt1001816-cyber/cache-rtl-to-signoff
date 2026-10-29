@@ -1,0 +1,28 @@
+#!/bin/bash
+# regress.sh : open-source regression (Icarus Verilog + SymbiYosys); exits non-zero if any check fails
+#   usage: ci/regress.sh [sim|sim_cg|mbist|formal|all]      (default all)
+cd "$(dirname "$0")/.."; mkdir -p build; fails=0
+check() {   # check <name> <log> <pattern that must appear>
+  if grep -q "$3" "$2"; then echo "PASS  $1"; else echo "FAIL  $1  (see $2)"; fails=$((fails+1)); fi
+}
+run_sim() { # run_sim <name> <dut module> <rtl files...>
+  local n=$1 m=$2; shift 2
+  sed "s/cache_top #(.LINES(LINES)) dut/$m #(.LINES(LINES)) dut/" verification/tb/tb_cache.v > build/tb_$n.v
+  iverilog -g2012 -o build/$n.vvp "$@" build/tb_$n.v && (cd build && vvp -n $n.vvp > $n.log)
+  check "$n: self-checking testbench, 10,000 random + directed requests" build/$n.log "FAIL = 0"
+}
+what=${1:-all}
+if [[ $what == sim || $what == all ]]; then run_sim sim cache_top rtl/cache_top.v; fi
+if [[ $what == sim_cg || $what == all ]]; then run_sim sim_cg cache_top_cg rtl/cache_top_cg.v rtl/clk_gate.v; fi
+if [[ $what == mbist || $what == all ]]; then
+  iverilog -g2012 -o build/mbist.vvp dft/mbist/mem_fault.sv dft/mbist/mbist_march.v dft/mbist/tb_mbist.sv && vvp -n build/mbist.vvp > build/mbist.log
+  check "mbist: March C- finds 5 injected memory faults" build/mbist.log "ALL 6 PASSED"
+fi
+if [[ $what == formal || $what == all ]]; then
+  (cd verification/formal && for t in bmc prove cover bug4; do sby -f cache.sby $t > ../../build/formal_$t.log 2>&1; done)
+  check "formal bmc: no assertion fails in 80 cycles" build/formal_bmc.log "DONE (PASS"
+  check "formal prove: k-induction proof" build/formal_prove.log "DONE (PASS"
+  check "formal cover: key events reachable" build/formal_cover.log "DONE (PASS"
+  check "formal bug4: planted hang is caught" build/formal_bug4.log "DONE (FAIL"
+fi
+echo "$fails failed"; exit $fails

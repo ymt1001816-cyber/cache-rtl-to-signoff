@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-10-28T22:30:39" hostname="Cindys-MacBook-Pro.local" package="cache" id="0" name="bmc" tests="8" errors="0" failures="0" time="49" skipped="3">
+<properties>
+<property name="os" value="Darwin"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="bmc" name="build execution" time="0">
+</testcase>
+<testcase classname="bmc" name="Property ASSERT in cache_formal at cache_formal.sv:34.5-34.52" time="0" type="ASSERT" location="cache_formal.sv:34.5-34.52" id="a_no_read_on_write">
+</testcase>
+<testcase classname="bmc" name="Property ASSERT in cache_formal at cache_formal.sv:36.5-36.47" time="0" type="ASSERT" location="cache_formal.sv:36.5-36.47" id="a_one_mem_op">
+</testcase>
+<testcase classname="bmc" name="Property ASSERT in cache_formal at cache_formal.sv:35.5-35.37" time="0" type="ASSERT" location="cache_formal.sv:35.5-35.37" id="a_req_done">
+</testcase>
+<testcase classname="bmc" name="Property COVER in cache_formal at cache_formal.sv:44.5-44.45" time="0" type="COVER" location="cache_formal.sv:44.5-44.45" id="c_read_done">
+<skipped />
+</testcase>
+<testcase classname="bmc" name="Property COVER in cache_formal at cache_formal.sv:46.5-46.40" time="0" type="COVER" location="cache_formal.sv:46.5-46.40" id="c_refill">
+<skipped />
+</testcase>
+<testcase classname="bmc" name="Property COVER in cache_formal at cache_formal.sv:45.5-45.46" time="0" type="COVER" location="cache_formal.sv:45.5-45.46" id="c_write_done">
+<skipped />
+</testcase>
+<testcase classname="bmc" name="Property ASSERT in cache_formal at cache_formal.sv:38.5-38.62" time="0" type="ASSERT" location="cache_formal.sv:38.5-38.62" id="h_refill_is_read">
+</testcase>
+<testcase classname="bmc" name="Property ASSERT in cache_formal at cache_formal.sv:39.5-39.48" time="0" type="ASSERT" location="cache_formal.sv:39.5-39.48" id="h_wmem_is_write">
+</testcase>
+<system-out>SBY 22:03:54 [cache_bmc] Removing directory '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bmc'.
+SBY 22:03:54 [cache_bmc] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/../../rtl/cache_top.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bmc/src/cache_top.v'.
+SBY 22:03:54 [cache_bmc] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_top_bug4.v' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bmc/src/cache_top_bug4.v'.
+SBY 22:03:54 [cache_bmc] Copy '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_formal.sv' to '/Users/my/Library/Mobile Documents/com~apple~CloudDocs/NEU/VLSI/08_Portfolio/cache-rtl-to-signoff/verification/formal/cache_bmc/src/cache_formal.sv'.
+SBY 22:03:54 [cache_bmc] engine_0: smtbmc yices
+SBY 22:03:54 [cache_bmc] base: starting process &quot;cd cache_bmc/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 22:03:54 [cache_bmc] base: finished (returncode=0)
+SBY 22:03:54 [cache_bmc] prep: starting process &quot;cd cache_bmc/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 22:03:54 [cache_bmc] prep: finished (returncode=0)
+SBY 22:03:54 [cache_bmc] smt2: starting process &quot;cd cache_bmc/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 22:03:54 [cache_bmc] smt2: finished (returncode=0)
+SBY 22:03:54 [cache_bmc] engine_0: starting process &quot;cd cache_bmc; yosys-smtbmc -s yices --presat --unroll --noprogress -t 80  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2&quot;
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Solver: yices
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 0..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 0..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 1..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 1..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 2..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 2..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 3..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 3..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 4..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 4..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 5..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 5..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 6..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 6..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 7..
+SBY 22:03:54 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 7..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 8..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 8..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 9..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 9..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 10..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 10..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 11..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 11..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 12..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 12..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 13..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 13..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 14..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 14..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 15..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 15..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 16..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 16..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 17..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 17..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 18..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 18..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 19..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 19..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 20..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 20..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 21..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 21..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 22..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assertions in step 22..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:00  Checking assumptions in step 23..
+SBY 22:03:55 [cache_bmc] engine_0: ##   0:00:01  Checking assertions in step 23..
+SBY 22:03:56 [cache_bmc] engine_0: ##   0:00:01  Checking assumptions in step 24..
+SBY 22:03:56 [cache_bmc] engine_0: ##   0:00:01  Checking assertions in step 24..
+SBY 22:03:56 [cache_bmc] engine_0: ##   0:00:01  Checking assumptions in step 25..
+SBY 22:03:56 [cache_bmc] engine_0: ##   0:00:01  Checking assertions in step 25..
+SBY 22:03:56 [cache_bmc] engine_0: ##   0:00:01  Checking assumptions in step 26..
+SBY 22:03:56 [cache_bmc] engine_0: ##   0:00:01  Checking assertions in step 26..
+SBY 22:03:57 [cache_bmc] engine_0: ##   0:00:02  Checking assumptions in step 27..
+SBY 22:03:57 [cache_bmc] engine_0: ##   0:00:02  Checking assertions in step 27..
+SBY 22:03:57 [cache_bmc] engine_0: ##   0:00:02  Checking assumptions in step 28..
+SBY 22:03:57 [cache_bmc] engine_0: ##   0:00:02  Checking assertions in step 28..
+SBY 22:03:57 [cache_bmc] engine_0: ##   0:00:02  Checking assumptions in step 29..
+SBY 22:03:58 [cache_bmc] engine_0: ##   0:00:03  Checking assertions in step 29..
+SBY 22:03:58 [cache_bmc] engine_0: ##   0:00:03  Checking assumptions in step 30..
+SBY 22:03:58 [cache_bmc] engine_0: ##   0:00:03  Checking assertions in step 30..
+SBY 22:03:58 [cache_bmc] engine_0: ##   0:00:03  Checking assumptions in step 31..
+SBY 22:03:58 [cache_bmc] engine_0: ##   0:00:03  Checking assertions in step 31..
+SBY 22:03:58 [cache_bmc] engine_0: ##   0:00:03  Checking assumptions in step 32..
+SBY 22:03:59 [cache_bmc] engine_0: ##   0:00:04  Checking assertions in step 32..
+SBY 22:03:59 [cache_bmc] engine_0: ##   0:00:04  Checking assumptions in step 33..
+SBY 22:03:59 [cache_bmc] engine_0: ##   0:00:04  Checking assertions in step 33..
+SBY 22:03:59 [cache_bmc] engine_0: ##   0:00:04  Checking assumptions in step 34..
+SBY 22:03:59 [cache_bmc] engine_0: ##   0:00:04  Checking assertions in step 34..
+SBY 22:03:59 [cache_bmc] engine_0: ##   0:00:04  Checking assumptions in step 35..
+SBY 22:04:00 [cache_bmc] engine_0: ##   0:00:05  Checking assertions in step 35..
+SBY 22:04:00 [cache_bmc] engine_0: ##   0:00:05  Checking assumptions in step 36..
+SBY 22:04:00 [cache_bmc] engine_0: ##   0:00:05  Checking assertions in step 36..
+SBY 22:04:01 [cache_bmc] engine_0: ##   0:00:06  Checking assumptions in step 37..
+SBY 22:04:01 [cache_bmc] engine_0: ##   0:00:06  Checking assertions in step 37..
+SBY 22:04:01 [cache_bmc] engine_0: ##   0:00:06  Checking assumptions in step 38..
+SBY 22:04:02 [cache_bmc] engine_0: ##   0:00:07  Checking assertions in step 38..
+SBY 22:04:02 [cache_bmc] engine_0: ##   0:00:07  Checking assumptions in step 39..
+SBY 22:04:02 [cache_bmc] engine_0: ##   0:00:07  Checking assertions in step 39..
+SBY 22:04:02 [cache_bmc] engine_0: ##   0:00:07  Checking assumptions in step 40..
+SBY 22:04:02 [cache_bmc] engine_0: ##   0:00:08  Checking assertions in step 40..
+SBY 22:04:03 [cache_bmc] engine_0: ##   0:00:08  Checking assumptions in step 41..
+SBY 22:04:03 [cache_bmc] engine_0: ##   0:00:08  Checking assertions in step 41..
+SBY 22:04:03 [cache_bmc] engine_0: ##   0:00:09  Checking assumptions in step 42..
+SBY 22:04:04 [cache_bmc] engine_0: ##   0:00:09  Checking assertions in step 42..
+SBY 22:04:04 [cache_bmc] engine_0: ##   0:00:09  Checking assumptions in step 43..
+SBY 22:04:04 [cache_bmc] engine_0: ##   0:00:09  Checking assertions in step 43..
+SBY 22:04:05 [cache_bmc] engine_0: ##   0:00:10  Checking assumptions in step 44..
+SBY 22:04:05 [cache_bmc] engine_0: ##   0:00:10  Checking assertions in step 44..
+SBY 22:04:05 [cache_bmc] engine_0: ##   0:00:10  Checking assumptions in step 45..
+SBY 22:04:06 [cache_bmc] engine_0: ##   0:00:11  Checking assertions in step 45..
+SBY 22:04:06 [cache_bmc] engine_0: ##   0:00:11  Checking assumptions in step 46..
+SBY 22:04:06 [cache_bmc] engine_0: ##   0:00:11  Checking assertions in step 46..
+SBY 22:04:06 [cache_bmc] engine_0: ##   0:00:12  Checking assumptions in step 47..
+SBY 22:04:07 [cache_bmc] engine_0: ##   0:00:12  Checking assertions in step 47..
+SBY 22:04:07 [cache_bmc] engine_0: ##   0:00:12  Checking assumptions in step 48..
+SBY 22:04:08 [cache_bmc] engine_0: ##   0:00:13  Checking assertions in step 48..
+SBY 22:04:08 [cache_bmc] engine_0: ##   0:00:13  Checking assumptions in step 49..
+SBY 22:04:08 [cache_bmc] engine_0: ##   0:00:13  Checking assertions in step 49..
+SBY 22:04:08 [cache_bmc] engine_0: ##   0:00:14  Checking assumptions in step 50..
+SBY 22:04:09 [cache_bmc] engine_0: ##   0:00:14  Checking assertions in step 50..
+SBY 22:04:09 [cache_bmc] engine_0: ##   0:00:14  Checking assumptions in step 51..
+SBY 22:04:10 [cache_bmc] engine_0: ##   0:00:15  Checking assertions in step 51..
+SBY 22:04:10 [cache_bmc] engine_0: ##   0:00:15  Checking assumptions in step 52..
+SBY 22:04:11 [cache_bmc] engine_0: ##   0:00:16  Checking assertions in step 52..
+SBY 22:04:11 [cache_bmc] engine_0: ##   0:00:16  Checking assumptions in step 53..
+SBY 22:04:12 [cache_bmc] engine_0: ##   0:00:17  Checking assertions in step 53..
+SBY 22:04:12 [cache_bmc] engine_0: ##   0:00:17  Checking assumptions in step 54..
+SBY 22:04:12 [cache_bmc] engine_0: ##   0:00:17  Checking assertions in step 54..
+SBY 22:04:12 [cache_bmc] engine_0: ##   0:00:17  Checking assumptions in step 55..
+SBY 22:04:13 [cache_bmc] engine_0: ##   0:00:18  Checking assertions in step 55..
+SBY 22:04:13 [cache_bmc] engine_0: ##   0:00:18  Checking assumptions in step 56..
+SBY 22:04:13 [cache_bmc] engine_0: ##   0:00:18  Checking assertions in step 56..
+SBY 22:04:13 [cache_bmc] engine_0: ##   0:00:18  Checking assumptions in step 57..
+SBY 22:04:14 [cache_bmc] engine_0: ##   0:00:19  Checking assertions in step 57..
+SBY 22:04:14 [cache_bmc] engine_0: ##   0:00:19  Checking assumptions in step 58..
+SBY 22:04:14 [cache_bmc] engine_0: ##   0:00:19  Checking assertions in step 58..
+SBY 22:04:15 [cache_bmc] engine_0: ##   0:00:20  Checking assumptions in step 59..
+SBY 22:04:16 [cache_bmc] engine_0: ##   0:00:21  Checking assertions in step 59..
+SBY 22:04:16 [cache_bmc] engine_0: ##   0:00:21  Checking assumptions in step 60..
+SBY 22:04:16 [cache_bmc] engine_0: ##   0:00:21  Checking assertions in step 60..
+SBY 22:04:16 [cache_bmc] engine_0: ##   0:00:21  Checking assumptions in step 61..
+SBY 22:04:17 [cache_bmc] engine_0: ##   0:00:22  Checking assertions in step 61..
+SBY 22:04:17 [cache_bmc] engine_0: ##   0:00:22  Checking assumptions in step 62..
+SBY 22:04:18 [cache_bmc] engine_0: ##   0:00:23  Checking assertions in step 62..
+SBY 22:04:18 [cache_bmc] engine_0: ##   0:00:23  Checking assumptions in step 63..
+SBY 22:04:19 [cache_bmc] engine_0: ##   0:00:24  Checking assertions in step 63..
+SBY 22:04:20 [cache_bmc] engine_0: ##   0:00:25  Checking assumptions in step 64..
+SBY 22:04:20 [cache_bmc] engine_0: ##   0:00:25  Checking assertions in step 64..
+SBY 22:04:20 [cache_bmc] engine_0: ##   0:00:25  Checking assumptions in step 65..
+SBY 22:14:18 [cache_bmc] engine_0: ##   0:10:23  Checking assertions in step 65..
+SBY 22:14:18 [cache_bmc] engine_0: ##   0:10:23  Checking assumptions in step 66..
+SBY 22:14:19 [cache_bmc] engine_0: ##   0:10:24  Checking assertions in step 66..
+SBY 22:14:19 [cache_bmc] engine_0: ##   0:10:24  Checking assumptions in step 67..
+SBY 22:14:20 [cache_bmc] engine_0: ##   0:10:25  Checking assertions in step 67..
+SBY 22:14:20 [cache_bmc] engine_0: ##   0:10:25  Checking assumptions in step 68..
+SBY 22:14:21 [cache_bmc] engine_0: ##   0:10:26  Checking assertions in step 68..
+SBY 22:14:21 [cache_bmc] engine_0: ##   0:10:26  Checking assumptions in step 69..
+SBY 22:14:23 [cache_bmc] engine_0: ##   0:10:28  Checking assertions in step 69..
+SBY 22:14:23 [cache_bmc] engine_0: ##   0:10:28  Checking assumptions in step 70..
+SBY 22:14:24 [cache_bmc] engine_0: ##   0:10:29  Checking assertions in step 70..
+SBY 22:14:24 [cache_bmc] engine_0: ##   0:10:29  Checking assumptions in step 71..
+SBY 22:14:26 [cache_bmc] engine_0: ##   0:10:31  Checking assertions in step 71..
+SBY 22:14:26 [cache_bmc] engine_0: ##   0:10:31  Checking assumptions in step 72..
+SBY 22:30:25 [cache_bmc] engine_0: ##   0:26:30  Checking assertions in step 72..
+SBY 22:30:26 [cache_bmc] engine_0: ##   0:26:31  Checking assumptions in step 73..
+SBY 22:30:27 [cache_bmc] engine_0: ##   0:26:32  Checking assertions in step 73..
+SBY 22:30:27 [cache_bmc] engine_0: ##   0:26:32  Checking assumptions in step 74..
+SBY 22:30:28 [cache_bmc] engine_0: ##   0:26:33  Checking assertions in step 74..
+SBY 22:30:28 [cache_bmc] engine_0: ##   0:26:33  Checking assumptions in step 75..
+SBY 22:30:29 [cache_bmc] engine_0: ##   0:26:34  Checking assertions in step 75..
+SBY 22:30:31 [cache_bmc] engine_0: ##   0:26:36  Checking assumptions in step 76..
+SBY 22:30:32 [cache_bmc] engine_0: ##   0:26:37  Checking assertions in step 76..
+SBY 22:30:32 [cache_bmc] engine_0: ##   0:26:37  Checking assumptions in step 77..
+SBY 22:30:35 [cache_bmc] engine_0: ##   0:26:40  Checking assertions in step 77..
+SBY 22:30:36 [cache_bmc] engine_0: ##   0:26:41  Checking assumptions in step 78..
+SBY 22:30:37 [cache_bmc] engine_0: ##   0:26:42  Checking assertions in step 78..
+SBY 22:30:37 [cache_bmc] engine_0: ##   0:26:42  Checking assumptions in step 79..
+SBY 22:30:38 [cache_bmc] engine_0: ##   0:26:43  Checking assertions in step 79..
+SBY 22:30:39 [cache_bmc] engine_0: ##   0:26:44  Status: passed
+SBY 22:30:39 [cache_bmc] engine_0: finished (returncode=0)
+SBY 22:30:39 [cache_bmc] engine_0: Status returned by engine: pass
+SBY 22:30:39 [cache_bmc] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:51 (51)
+SBY 22:30:39 [cache_bmc] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:49 (49)
+SBY 22:30:39 [cache_bmc] summary: engine_0 (smtbmc yices) returned pass
+SBY 22:30:39 [cache_bmc] summary: engine_0 did not produce any traces
+SBY 22:30:39 [cache_bmc] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

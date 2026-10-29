@@ -1,0 +1,19 @@
+##   0:00:00  Solver: yices
+##   0:00:00  Trying induction in step 50..
+##   0:00:00  Trying induction in step 49..
+##   0:00:00  Trying induction in step 48..
+##   0:00:00  Trying induction in step 47..
+##   0:00:00  Trying induction in step 46..
+##   0:00:00  Trying induction in step 45..
+##   0:00:00  Trying induction in step 44..
+##   0:00:00  Trying induction in step 43..
+##   0:00:00  Trying induction in step 42..
+##   0:00:00  Trying induction in step 41..
+##   0:00:00  Trying induction in step 40..
+##   0:00:00  Trying induction in step 39..
+##   0:00:00  Trying induction in step 38..
+##   0:00:00  Trying induction in step 37..
+##   0:00:00  Trying induction in step 36..
+##   0:00:00  Trying induction in step 35..
+##   0:00:00  Temporal induction successful.
+##   0:00:00  Status: passed

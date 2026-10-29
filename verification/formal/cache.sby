@@ -23,6 +23,6 @@ bug4: read -formal cache_top_bug4.v cache_formal.sv
 prep -top cache_formal
 
 [files]
-../rtl/cache_top.v
+../../rtl/cache_top.v
 cache_top_bug4.v
 cache_formal.sv

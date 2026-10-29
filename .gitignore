@@ -5,3 +5,4 @@
 xcelium.d/
 INCA_libs/
 .DS_Store
+build/
