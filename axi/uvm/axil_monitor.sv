@@ -24,10 +24,46 @@ class axil_monitor extends uvm_monitor;
       `uvm_fatal("NOVIF", "axil_monitor: no virtual interface 'vif' in config_db")
   endfunction
 
-  // TODO: run_phase
-  //   forever @(posedge vif.clk) if (vif.rst_n):
-  //     remember awaddr / wdata / araddr when their handshake happens
-  //     while a read is pending, note if cvif.mem_rd was 1
-  //     on an R handshake: create a cache_item (is_write = 0, addr, rdata, hit) and ap.write(it)
-  //     on a B handshake : create a cache_item (is_write = 1, addr, wdata) and ap.write(it)
+  task run_phase(uvm_phase phase);
+    bit [31:0] aw_addr, w_data, ar_addr;
+    bit rd_pending = 0;
+    bit saw_mem_rd = 0;
+    cache_item it;
+    forever begin
+      @(posedge vif.clk);
+      if (!vif.rst_n) begin
+        rd_pending = 0;
+        saw_mem_rd = 0;
+        aw_addr = 0;
+        w_data = 0;
+        ar_addr = 0;
+        continue;
+      end
+      if (rd_pending && cvif.mem_rd) saw_mem_rd = 1;
+      if (vif.awvalid && vif.awready) aw_addr = vif.awaddr;
+      if (vif.wvalid && vif.wready) w_data = vif.wdata;
+      if (vif.arvalid && vif.arready) begin
+        ar_addr = vif.araddr;
+        rd_pending = 1;
+        saw_mem_rd = 0;
+      end
+      if (vif.rvalid && vif.rready) begin
+        it = cache_item::type_id::create("it");
+        it.is_write = 0;
+        it.addr = ar_addr[15:0];
+        it.rdata = vif.rdata;
+        it.hit = !saw_mem_rd;
+        ap.write(it);
+        rd_pending = 0;
+        saw_mem_rd = 0;
+      end
+      if (vif.bvalid && vif.bready) begin
+        it = cache_item::type_id::create("it");
+        it.is_write = 1;
+        it.addr = aw_addr[15:0];
+        it.wdata = w_data;
+        ap.write(it);
+      end
+    end
+  endtask
 endclass
