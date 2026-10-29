@@ -22,6 +22,7 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 | Power integrity | IR drop 6.1% → 2.2% after adding metal6 stripes; EM 0.50 MA/cm² (limit 1.8) |
 | Extra signoff | Antenna clean (SKY130 ratios), custom Calibre ERC clean |
 | DFT | Scan insertion script, 1–32 chains: 99.99% stuck-at coverage; 32 chains cut tester cycles 31× (11.1 M → 0.35 M); patterns verified in gate-level simulation (0 miscompares; a planted defect gives 151 failing tests); transition faults: launch-on-capture 66.6%, launch-on-shift 70.9% with 41% fewer patterns |
+| AXI4-Lite | Slave wrapper around the cache; testbench randomizes AW/W order and ready delays, checks VALID/READY rules and SLVERR on partial writes: 0 violations |
 | MBIST | March C- controller (10N = 2,561 cycles) catches stuck-at, transition, coupling and address-decoder faults |
 | Power | 33.8 mW with real switching activity, 98% of it following the clock |
 | Clock gating | Latch-based clock gates in RTL (one per word): cells −50%, area −38%, real-activity power −70% (13.9 → 4.1 mW) at synthesis; same testbench passes; LEC equivalent incl. 256 latches |
@@ -49,6 +50,7 @@ An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle
 | `model/` | Python reference model (miss counts, AMAT, DRAM energy) |
 | `synthesis/` | Genus script, constraints, SAIF power, LEC |
 | `layout/` | Innovus script (MMMC corners, power stripes), antenna LEF generator, IR-drop grid solver, ERC deck, signoff pipeline |
+| `axi/` | AXI4-Lite slave wrapper, protocol-checking testbench, guide |
 | `dft/` | Scan insertion, Modus ATPG flow, pattern simulation, MBIST (controller, fault-injecting memory, testbench) |
 | `docs/figures/` | Figures from the report |
 
@@ -67,7 +69,7 @@ PDK and standard cells (FreePDK45, OSU gscl45nm) are not included. Scripts use t
 
 ## My role and AI use
 
-I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL and the MBIST controller.
+I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller and the AXI4-Lite wrapper.
 As allowed by the course, I used an AI assistant (Claude) to help set up the tool flows and write several scripts
-(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench) and to draft documentation.
+(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench, the AXI testbench) and to draft documentation.
 I ran, reviewed and can explain every step.

@@ -69,6 +69,7 @@ module tb_axil_cache;
 
     // ---- AXI master tasks (inputs change at negedge) ----
     integer pass_cnt = 0, fail_cnt = 0, timeouts = 0, t;
+    reg [1:0] last_bresp;
     task wait_or_timeout(input string what);
         begin t = t + 1; if (t > 300) begin timeouts = timeouts + 1; $display("TIMEOUT waiting for %s", what); end end
     endtask
@@ -93,8 +94,9 @@ module tb_axil_cache;
             t = 0;                                                       // wait for bvalid first, THEN delay bready:
             while (!bvalid && t <= 300) begin @(negedge clk); wait_or_timeout("B"); end
             repeat ($urandom % 4) @(negedge clk);                        // the slave must hold bvalid meanwhile
+            last_bresp = bresp;
             bready = 1; @(negedge clk); bready = 0;
-            ref_mem[a[15:2]] = d;
+            if (wstrb == 4'hf) ref_mem[a[15:2]] = d;                     // a partial write must not change memory
         end
     endtask
     task axi_read(input [15:0] a);
@@ -121,6 +123,10 @@ module tb_axil_cache;
         repeat (3) @(posedge clk); rst_n = 1;
         axi_read(16'h0000); axi_write(16'h0004, 32'h1234_5678); axi_read(16'h0004);   // directed: miss, write hit, read
         axi_write(16'h4404, 32'hCAFE_0001); axi_read(16'h4404);                       // write miss, then read
+        wstrb = 4'h3; axi_write(16'h0008, 32'hDEAD_BEEF); wstrb = 4'hf;               // partial write: SLVERR, no write
+        if (last_bresp === 2'b10) pass_cnt = pass_cnt + 1;
+        else begin fail_cnt = fail_cnt + 1; $display("FAIL partial write: bresp %b, expected 10 (SLVERR)", last_bresp); end
+        axi_read(16'h0008);                                                           // must still return the old data
         for (n = 0; n < 3000 && timeouts == 0; n = n + 1) begin
             a = (($urandom % 8) << 10) | (($urandom % 64) << 4) | (($urandom % 4) << 2);  // 8 tags x 64 lines x 4 words: hits and conflicts
             if ($urandom % 3 == 0) axi_write(a, $urandom); else axi_read(a);

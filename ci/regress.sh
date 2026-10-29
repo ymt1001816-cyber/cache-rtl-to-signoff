@@ -1,6 +1,6 @@
 #!/bin/bash
 # regress.sh : open-source regression (Icarus Verilog + SymbiYosys); exits non-zero if any check fails
-#   usage: ci/regress.sh [sim|sim_cg|mbist|formal|all]      (default all)
+#   usage: ci/regress.sh [sim|sim_cg|mbist|axi|formal|all]      (default all)
 cd "$(dirname "$0")/.."; mkdir -p build; fails=0
 check() {   # check <name> <log> <pattern that must appear>
   if grep -q "$3" "$2"; then echo "PASS  $1"; else echo "FAIL  $1  (see $2)"; fails=$((fails+1)); fi
@@ -17,6 +17,10 @@ if [[ $what == sim_cg || $what == all ]]; then run_sim sim_cg cache_top_cg rtl/c
 if [[ $what == mbist || $what == all ]]; then
   iverilog -g2012 -o build/mbist.vvp dft/mbist/mem_fault.sv dft/mbist/mbist_march.v dft/mbist/tb_mbist.sv && vvp -n build/mbist.vvp > build/mbist.log
   check "mbist: March C- finds 5 injected memory faults" build/mbist.log "ALL 6 PASSED"
+fi
+if [[ $what == axi || $what == all ]]; then
+  iverilog -g2012 -o build/axi.vvp rtl/cache_top.v axi/axil_cache.v axi/tb_axil_cache.sv && vvp -n build/axi.vvp > build/axi.log
+  check "axi: AXI4-Lite wrapper, random AW/W order and ready delays, protocol checks, SLVERR" build/axi.log "ALL CHECKS PASSED"
 fi
 if [[ $what == formal || $what == all ]]; then
   (cd verification/formal && for t in bmc prove cover bug4; do sby -f cache.sby $t > ../../build/formal_$t.log 2>&1; done)
