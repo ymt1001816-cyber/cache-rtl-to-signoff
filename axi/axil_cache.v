@@ -122,4 +122,7 @@ module axil_cache (
         .mem_addr(mem_addr), .mem_wdata(mem_wdata), .mem_rd(mem_rd), .mem_wr(mem_wr),
         .mem_rdata(mem_rdata), .mem_ack(mem_ack)
     );
+`ifdef FORMAL                       // formal properties (SymbiYosys only; simulation does not define FORMAL)
+`include "axil_props.vh"
+`endif
 endmodule

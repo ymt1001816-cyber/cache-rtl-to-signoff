@@ -1,0 +1,27 @@
+# axil.sby : formal proof of the AXI4-Lite rules for axil_cache (run in axi/formal:  sby -f axil.sby)
+#   bmc   = no rule broken in the first 30 cycles      prove = k-induction: holds forever
+#   cover = the interesting cases are reachable
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 30
+prove: mode prove
+prove: depth 20
+cover: mode cover
+cover: depth 30
+
+[engines]
+smtbmc yices
+
+[script]
+read -formal cache_stub.v axil_cache.v
+prep -top axil_cache
+
+[files]
+cache_stub.v
+../axil_cache.v
+axil_props.vh

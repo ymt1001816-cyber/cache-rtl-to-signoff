@@ -6,3 +6,5 @@ xcelium.d/
 INCA_libs/
 .DS_Store
 build/
+axi/formal/axil_*/
+verification/formal/cache_*/

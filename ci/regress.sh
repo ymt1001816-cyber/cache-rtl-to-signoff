@@ -28,5 +28,8 @@ if [[ $what == formal || $what == all ]]; then
   check "formal prove: k-induction proof" build/formal_prove.log "DONE (PASS"
   check "formal cover: key events reachable" build/formal_cover.log "DONE (PASS"
   check "formal bug4: planted hang is caught" build/formal_bug4.log "DONE (FAIL"
+  (cd axi/formal && for t in bmc prove cover; do sby -f axil.sby $t > ../../build/axi_formal_$t.log 2>&1; done)
+  check "axi formal prove: AXI4-Lite rules hold for every input sequence and any cache behavior" build/axi_formal_prove.log "DONE (PASS"
+  check "axi formal bmc + cover" build/axi_formal_cover.log "DONE (PASS"
 fi
 echo "$fails failed"; exit $fails
