@@ -33,7 +33,7 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 
 ## Design-space exploration
 
-16 cache variants (4 sizes × direct-mapped / 2-way / write-back / SRAM) were synthesized; SRAM versions use OpenRAM macros.
+16 cache variants (4 sizes × flip-flop or SRAM storage × direct-mapped or 2-way) were synthesized, plus a write-back version; SRAM versions use OpenRAM macros.
 An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle; a 2-way SRAM cache was the best balance.
 
 <p align="center"><img src="docs/figures/fig_design_space.png" width="480" alt="Design space: area vs AMAT"></p>
