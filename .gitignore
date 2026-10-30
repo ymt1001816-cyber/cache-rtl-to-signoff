@@ -13,3 +13,6 @@ verification/cocotb/results_*.xml
 verification/cocotb/bug_*.v
 __pycache__/
 csr/CSR_GUIDE.md
+verification/cocotb/cov_runs/
+verification/cocotb/COVERAGE_GUIDE.md
+verification/cocotb/COVERAGE_REPORT.md

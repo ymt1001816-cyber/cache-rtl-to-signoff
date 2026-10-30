@@ -1,6 +1,6 @@
 #!/bin/bash
 # regress.sh : open-source regression (Icarus Verilog + SymbiYosys); exits non-zero if any check fails
-#   usage: ci/regress.sh [lint|sim|sim_cg|mbist|dft|cocotb|axi|csr|formal|all]      (default all)
+#   usage: ci/regress.sh [lint|sim|sim_cg|mbist|dft|cocotb|cov|axi|csr|formal|all]      (default all)
 cd "$(dirname "$0")/.."; mkdir -p build; fails=0
 check() {   # check <name> <log> <pattern that must appear>
   if grep -q "$3" "$2"; then echo "PASS  $1"; else echo "FAIL  $1  (see $2)"; fails=$((fails+1)); fi
@@ -38,10 +38,14 @@ fi
 if [[ $what == cocotb || $what == all ]]; then
   for d in base cg dft; do
     (cd verification/cocotb && make DUT=$d > ../../build/cocotb_$d.log 2>&1)
-    check "cocotb $d: random memory latency, hit/miss reference model, coverage closed" build/cocotb_$d.log "TESTS=2 PASS=2 FAIL=0"
+    check "cocotb $d: random memory latency, hit/miss reference model, data and memory-traffic checks" build/cocotb_$d.log " FAIL=0 SKIP="
   done
   (cd verification/cocotb && make BUG=write_allocate > ../../build/cocotb_bug.log 2>&1)
   check "cocotb bug: planted write-allocate bug is caught by the memory-traffic check" build/cocotb_bug.log "1 memory writes, 4 memory reads"
+fi
+if [[ $what == cov || $what == all ]]; then    # 20-seed cocotb regression, merged functional coverage must be 100%
+  (cd verification/cocotb && ./regress.sh 20 1000 > ../../build/cov.log 2>&1; echo "exit $?" >> ../../build/cov.log)
+  check "cov: 20-seed regression, 94/94 functional coverage bins, every seed passes" build/cov.log "0 holes"
 fi
 if [[ $what == axi || $what == all ]]; then
   iverilog -g2012 -o build/axi.vvp rtl/cache_top.v axi/axil_cache.v axi/tb_axil_cache.sv && vvp -n build/axi.vvp > build/axi.log

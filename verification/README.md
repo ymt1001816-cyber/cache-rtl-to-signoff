@@ -6,7 +6,7 @@ Everything starts from the [verification plan](VERIFICATION_PLAN.md): what must 
 |---|---|---|---|
 | [`tb/`](tb/) | Self-checking Verilog testbench: directed + 10,000 random requests, 4 workloads with hit rate and AMAT | `ci/regress.sh sim` | PASS 8,938, FAIL 0 |
 | [`uvm/`](uvm/) | UVM environment: CPU agent, memory responder, scoreboard, covergroups, SVA (Xcelium) | `uvm/run_uvm.sh` | 100% functional coverage, 20/20 seeds, 4/4 planted bugs caught |
-| [`cocotb/`](cocotb/) | Python testbench: random memory latency 1–4 cycles, reference model predicts every hit and miss, scoreboard checks data **and memory traffic**, coverage must close | `cd cocotb && make [DUT=cg\|dft]` | ~6,900 checks pass on original, clock-gated and DFT RTL; planted write-allocate bug fails |
+| [`cocotb/`](cocotb/) | Python testbench: random memory latency 1–4 cycles, reference model predicts every hit and miss, scoreboard checks data **and memory traffic**, coverage must close | `cd cocotb && make [DUT=cg\|dft]`; `./regress.sh 100` | ~6,900 checks pass on original, clock-gated and DFT RTL; planted write-allocate bug fails; [coverage closure](cocotb/COVERAGE_CLOSURE.md) 94/94 bins over 100 seeds |
 | [`formal/`](formal/) | SymbiYosys: bmc, k-induction prove, cover, and a planted hang (bug4) | `ci/regress.sh formal` | prove PASS; bug4 caught |
 | [`coverage/`](coverage/CODE_COVERAGE.md) | Code coverage with Verilator | `coverage/run_codecov.sh` | Branch and expression 100%, toggle 99.2% |
 
