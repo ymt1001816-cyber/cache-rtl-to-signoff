@@ -12,6 +12,7 @@ and stitches all flip-flops into 1–32 chains. ATPG and pattern simulation use 
 | [`mbist/`](mbist/) | March C- MBIST controller, fault-injecting memory model and testbench |
 | `dft_flow.sh`, `scan_compare.sh` | Clock-gated design with test enable: synthesis → LEC → scan → ATPG |
 | `tb_dft.sv`, `cache_top_wrap.v` | Test-mode checks of the DFT RTL; wrapper to run the original testbench on it |
+| `te_scan_en.sh` | Same scan netlist and ATPG, with the clock-gate test enable driven by scan_en instead of a tied pin |
 
 ## Scan and ATPG
 
@@ -33,6 +34,17 @@ Clock gates stop the clock while the cache is idle, and scan shift happens while
 | Clock gate with test enable (`rtl/clk_gate_te.v`) | 32 of 32 | **99.84%** |
 
 The test enable goes into the latch with the functional enable (`en | test_en`), so the gated clock stays glitch-free.
+
+### Where should the test enable come from?
+
+| Test enable driven by | Testmode coverage | Global coverage | Untested faults | Patterns |
+|---|---|---|---|---|
+| Its own pin, tied to 1 for the whole test | 99.84% | 98.97% | 552 | 1,294 |
+| **scan_en** | **99.99%** | **99.94%** | **17** | 1,267 |
+
+Tied to 1, the clock gates are open in capture too, so the enable logic that picks which word is written can never be tested
+(its faults are inactive). Driven by scan_en, the gates are forced open only while shifting and follow the functional enable in capture,
+so 2,816 more faults become testable and untested faults drop from 552 to 17, with slightly fewer patterns.
 Genus mapped the gated flip-flops to falling-edge flip-flops behind a NAND gate, which is why the scan script keeps the two edges in separate chains.
 
 ## MBIST
