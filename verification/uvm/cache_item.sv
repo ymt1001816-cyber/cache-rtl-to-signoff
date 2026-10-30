@@ -8,6 +8,8 @@ class cache_item extends uvm_sequence_item;
        bit [31:0] rdata;     // data read back (filled by the monitor, not random)
   int latency;              // waiting negedges before ready, measured by the monitor
   bit hit;                  // no memory read observed during this request (used for reads)
+  bit csr;                  // 1 = CSR access (AXI address bit 16), used by the register model
+  bit [1:0] resp;           // AXI response (BRESP / RRESP), filled by the AXI driver
 
   constraint c_align { addr[1:0] == 2'b00; } // requests address whole 32-bit words
 

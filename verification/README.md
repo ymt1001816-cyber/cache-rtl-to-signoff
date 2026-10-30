@@ -18,4 +18,5 @@ Everything starts from the [verification plan](VERIFICATION_PLAN.md): what must 
 - **Formal** proves properties for every input sequence, which simulation cannot.
 - **Code coverage** shows what the tests never reached (the toggle gap is `cpu_addr[1:0]`, which the cache ignores by design).
 
+Register verification with a UVM register model (RAL) is in [`../csr/`](../csr/README.md).
 Equivalence (Conformal LEC) and gate-level / SDF simulation are in [`../synthesis/`](../synthesis/README.md) and [`../layout/`](../layout/README.md).

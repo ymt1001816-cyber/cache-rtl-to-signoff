@@ -15,14 +15,14 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 - **Verified three independent ways.** UVM (100% functional coverage, 4/4 planted bugs caught), cocotb with a Python reference model that checks memory traffic as well as data, and SymbiYosys k-induction proofs. LEC confirms RTL = netlist = layout.
 - **Signed off, not just placed.** DRC 0, LVS correct, timing at SS / TT / FF corners, IR drop and EM, antenna and a custom ERC deck. [Four bugs](#bugs-that-only-signoff-found) were invisible until signoff.
 - **Low power that stays testable.** Latch-based clock gating cuts real-activity power by **86%** (33.8 → 4.56 mW). It also broke scan: coverage fell to **84.3%**. A test-enable clock gate brings it back to **99.84%**, with a March C- MBIST built in.
-- **Reproducible.** 16 open-source checks run on every push. The open-source layout (OpenROAD) runs in GitHub Actions in about 20 minutes.
+- **Reproducible.** 25 open-source checks (including Verilator lint) run on every push. The open-source layout (OpenROAD) runs in GitHub Actions in about 20 minutes.
 
 ## Design
 
 <p align="center"><img src="docs/figures/fig_block_diagram.png" width="640" alt="Cache block diagram"></p>
 
 64 lines × 16-byte blocks, 4-state controller (IDLE, COMPARE, REFILL, WRITE_MEM), 100 MHz.
-An AXI4-Lite slave wrapper puts the cache on a standard bus.
+An AXI4-Lite slave wrapper puts the cache on a standard bus, with control and status registers (flush, hit / miss / write counters).
 
 ## Flow
 
@@ -47,8 +47,10 @@ flowchart LR
 | UVM | 100% functional coverage, 20/20 seeds pass, 4/4 planted bugs caught; AXI4-Lite agent reuses the same sequences, scoreboard and coverage |
 | cocotb | Random memory latency, reference model checks every hit/miss and the memory traffic; passes on the original, clock-gated and DFT RTL |
 | Formal | k-induction proofs: no-write-allocate, bounded latency, AXI4-Lite handshake rules for any cache behavior |
+| Registers (UVM RAL) | Register model with built-in reset and bit-bash tests; hit / miss / write counters match an independent reference; flush verified |
 | Code coverage | Branch and expression 100%, toggle 99.2% |
 | Equivalence | RTL = netlist = layout netlist (8,725 points); scan and DFT netlists equivalent too |
+| Lint | Verilator `-Wall` clean on every RTL variant; each intentional warning is waived with its reason ([waivers](ci/lint_waivers.vlt)) |
 
 **Physical design and signoff** ([details](layout/README.md), [open-source flow](openroad/README.md))
 
@@ -97,17 +99,18 @@ An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle
 | [`rtl/`](rtl/) | Cache RTL: direct-mapped, 2-way, write-back, SRAM variants, clock-gated, DFT (test-enable clock gates + MBIST) |
 | [`verification/`](verification/README.md) | Self-checking testbench, UVM + SVA, cocotb, formal, code coverage, verification plan |
 | [`axi/`](axi/README.md) | AXI4-Lite wrapper, protocol testbench, SVA, formal proof, UVM agent |
+| [`csr/`](csr/README.md) | Control / status registers, RTL testbench, UVM register model (RAL) |
 | [`synthesis/`](synthesis/README.md) | Genus script, constraints, power with real activity, LEC, clock gating |
 | [`layout/`](layout/README.md) | Innovus script, antenna LEF, IR-drop solver, ERC deck, signoff pipeline |
 | [`dft/`](dft/README.md) | Scan insertion, ATPG, pattern simulation, MBIST, clock gating + scan |
 | [`openroad/`](openroad/README.md) | Open-source RTL-to-GDS (OpenROAD-flow-scripts) |
 | [`model/`](model/) | Python cache model (miss counts, AMAT, DRAM energy) |
-| [`ci/`](ci/) | Open-source regression run by GitHub Actions |
+| [`ci/`](ci/) | Open-source regression and lint waivers, run by GitHub Actions |
 
 ## Run it yourself
 
 ```bash
-ci/regress.sh all     # Icarus Verilog, cocotb, SymbiYosys (OSS CAD Suite): 16 checks
+ci/regress.sh all     # Verilator lint, Icarus Verilog, cocotb, SymbiYosys (OSS CAD Suite): 25 checks
 ```
 
 The same script runs on every push. The open-source layout runs from **Actions → openroad → Run workflow** (GDS and reports are saved as an artifact).
@@ -117,7 +120,7 @@ The Cadence flows need a licensed install; PDK and standard cells (FreePDK45, OS
 
 ## My role and AI use
 
-I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller, the DFT version (test-enable clock gates, MBIST integration), the AXI4-Lite wrapper, its SVA and formal properties, the AXI UVM agent, and the cocotb reference model, driver, scoreboard and random test.
+I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller, the DFT version (test-enable clock gates, MBIST integration), the AXI4-Lite wrapper, its SVA and formal properties, the AXI UVM agent, the cocotb reference model, driver, scoreboard and random test, and the CSR block with its UVM register model and adapter.
 As allowed by the course, I used an AI assistant (Claude) to help set up the tool flows and write several scripts
-(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench, the DFT test-mode testbench, the cocotb memory model, coverage and build setup, the OpenROAD flow setup, the AXI testbench) and to draft documentation.
+(layout, signoff, scan insertion, ATPG, IR-drop model, ERC deck, formal environment assumptions, the MBIST fault-injecting memory and testbench, the DFT test-mode testbench, the cocotb memory model, coverage and build setup, the OpenROAD flow setup, the CSR testbench, RAL environment and tests, the lint waivers, the AXI testbench) and to draft documentation.
 I ran, reviewed and can explain every step.

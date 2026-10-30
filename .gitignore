@@ -12,3 +12,4 @@ verification/cocotb/sim_build_*/
 verification/cocotb/results_*.xml
 verification/cocotb/bug_*.v
 __pycache__/
+csr/CSR_GUIDE.md

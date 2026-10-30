@@ -53,7 +53,7 @@ class axil_monitor extends uvm_monitor;
         it.addr = ar_addr[15:0];
         it.rdata = vif.rdata;
         it.hit = !saw_mem_rd;
-        ap.write(it);
+        if (!ar_addr[16]) ap.write(it);
         rd_pending = 0;
         saw_mem_rd = 0;
       end
@@ -62,7 +62,7 @@ class axil_monitor extends uvm_monitor;
         it.is_write = 1;
         it.addr = aw_addr[15:0];
         it.wdata = w_data;
-        ap.write(it);
+        if (!aw_addr[16]) ap.write(it);
       end
     end
   endtask

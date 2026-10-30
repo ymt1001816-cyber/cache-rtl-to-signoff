@@ -1,0 +1,29 @@
+`verilator_config
+// (Note: a comment must not start with the tool name, or it is read as a tool directive.)
+// lint_waivers.vlt : Verilator -Wall warnings that are intentional, with the reason for each.
+// Anything not listed here fails the lint check (ci/regress.sh lint).
+
+// Clock gates are latches on purpose (glitch-free gating: the latch holds the enable while clk is high).
+// The linter assumes a latch in a combinational block is a mistake, and prefers blocking assignments there;
+// nonblocking is the usual style for a latch.
+lint_off -rule LATCH   -file "*clk_gate*.v"
+lint_off -rule COMBDLY -file "*clk_gate*.v"
+
+// With clock gating, each data word is written on its own gated clock, so one array has many write clocks.
+lint_off -rule MULTIDRIVEN -file "*rtl/cache_top_*.v" -match "*data_arr*"
+
+// refill_cnt (2 bits) is compared with WORDS-1, a 32-bit parameter expression; the value (3) fits in 2 bits.
+lint_off -rule WIDTHEXPAND -file "*rtl/cache_top*.v" -match "*refill_cnt*"
+lint_off -rule WIDTHEXPAND -file "*csr/cache_top_csr.v" -match "*refill_cnt*"
+
+// Word-aligned cache: the byte offset cpu_addr[1:0] is not used.
+// 64 KB address space: AXI address bits 31..16 are not used (in the CSR version bit 16 selects the registers).
+lint_off -rule UNUSEDSIGNAL -file "*rtl/cache_top*.v" -match "*cpu_addr*"
+lint_off -rule UNUSEDSIGNAL -file "*csr/cache_top_csr.v" -match "*cpu_addr*"
+lint_off -rule UNUSEDSIGNAL -file "*axi/axil_cache.v" -match "*addr*"
+lint_off -rule UNUSEDSIGNAL -file "*csr/axil_cache_csr.v" -match "*addr*"
+
+// CSR decode functions take the whole 16-bit offset but look only at the bits that select a register.
+lint_off -rule UNUSEDSIGNAL -file "*csr/axil_cache_csr.v" -match "*function variable*"
+// Writable CSR bits are CTRL bit 0 and CMD bits 1..0; the other write-data bits are ignored by the spec.
+lint_off -rule UNUSEDSIGNAL -file "*csr/axil_cache_csr.v" -match "*w_data*"

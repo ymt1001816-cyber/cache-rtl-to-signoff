@@ -51,7 +51,7 @@ class cache_reset_test extends cache_test;
 
   task run_phase(uvm_phase phase);   // replaces cache_test's run_phase
     cache_directed_seq d = cache_directed_seq::type_id::create("d");
-    cache_read_seq     rd = cache_read_seq::type_id::create("rd");   // you write this class in cache_seq.sv (TODO 3e)
+    cache_read_seq     rd = cache_read_seq::type_id::create("rd");
     bit saw_mem_rd = 0;
     phase.raise_objection(this);
     wait (vif.rst_n === 1'b1);

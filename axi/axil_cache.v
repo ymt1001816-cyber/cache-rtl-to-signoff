@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 // axil_cache.v : AXI4-Lite slave wrapper around cache_top (CPU side); the memory side is unchanged
 //   AXI4-Lite read / write  ->  cpu_rd / cpu_wr  ->  wait for cpu_ready  ->  AXI response
 //   See AXI_GUIDE.md for the handshake rules.

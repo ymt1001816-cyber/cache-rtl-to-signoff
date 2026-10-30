@@ -1,6 +1,6 @@
 #!/bin/bash
 # regress.sh : open-source regression (Icarus Verilog + SymbiYosys); exits non-zero if any check fails
-#   usage: ci/regress.sh [sim|sim_cg|mbist|dft|cocotb|axi|formal|all]      (default all)
+#   usage: ci/regress.sh [lint|sim|sim_cg|mbist|dft|cocotb|axi|csr|formal|all]      (default all)
 cd "$(dirname "$0")/.."; mkdir -p build; fails=0
 check() {   # check <name> <log> <pattern that must appear>
   if grep -q "$3" "$2"; then echo "PASS  $1"; else echo "FAIL  $1  (see $2)"; fails=$((fails+1)); fi
@@ -12,6 +12,18 @@ run_sim() { # run_sim <name> <dut module> <rtl files...>
   check "$n: self-checking testbench, 10,000 random + directed requests" build/$n.log "FAIL = 0"
 }
 what=${1:-all}
+if [[ $what == lint || $what == all ]]; then   # Verilator -Wall; intentional warnings are waived (with reasons) in ci/lint_waivers.vlt
+  lint() { local top=$1; shift; verilator --lint-only -Wall ci/lint_waivers.vlt --top-module $top "$@" > build/lint_$top.log 2>&1 && echo LINT_CLEAN >> build/lint_$top.log
+           check "lint $top: Verilator -Wall clean" build/lint_$top.log LINT_CLEAN; }
+  lint cache_top rtl/cache_top.v
+  lint cache_top_2way rtl/cache_top_2way.v
+  lint cache_top_wb rtl/cache_top_wb.v
+  lint cache_top_sram_2way rtl/cache_top_sram_2way.v rtl/sram_model.v
+  lint cache_top_cg rtl/cache_top_cg.v rtl/clk_gate.v
+  lint cache_top_dft rtl/cache_top_dft.v rtl/clk_gate_te.v dft/mbist/mbist_march.v
+  lint axil_cache axi/axil_cache.v rtl/cache_top.v
+  lint axil_cache_csr csr/axil_cache_csr.v csr/cache_top_csr.v
+fi
 if [[ $what == sim || $what == all ]]; then run_sim sim cache_top rtl/cache_top.v; fi
 if [[ $what == sim_cg || $what == all ]]; then run_sim sim_cg cache_top_cg rtl/cache_top_cg.v rtl/clk_gate.v; fi
 if [[ $what == mbist || $what == all ]]; then
@@ -34,6 +46,10 @@ fi
 if [[ $what == axi || $what == all ]]; then
   iverilog -g2012 -o build/axi.vvp rtl/cache_top.v axi/axil_cache.v axi/tb_axil_cache.sv && vvp -n build/axi.vvp > build/axi.log
   check "axi: AXI4-Lite wrapper, random AW/W order and ready delays, protocol checks, SLVERR" build/axi.log "ALL CHECKS PASSED"
+fi
+if [[ $what == csr || $what == all ]]; then
+  iverilog -g2012 -o build/csr.vvp csr/cache_top_csr.v csr/axil_cache_csr.v csr/tb_csr.sv && vvp -n build/csr.vvp > build/csr.log
+  check "csr: register reset values, SLVERR, hit/miss/write counters vs reference model, cnt_en, cnt_clr, flush" build/csr.log "ALL CSR CHECKS PASSED"
 fi
 if [[ $what == formal || $what == all ]]; then
   (cd verification/formal && for t in bmc prove cover bug4; do sby -f cache.sby $t > ../../build/formal_$t.log 2>&1; done)
