@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 300
     container: openroad/orfs:26Q4-229-g64939f371     # pinned ORFS image: Yosys + OpenROAD + KLayout
+    defaults:
+      run:
+        shell: bash                     # the container's default sh has no 'source'
     steps:
       - uses: actions/checkout@v4
       - name: RTL to GDS
