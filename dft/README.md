@@ -51,3 +51,21 @@ Genus mapped the gated flip-flops to falling-edge flip-flops behind a NAND gate,
 
 `mbist_march.v` runs March C- (10N operations, 2,561 cycles for 256 words). In `rtl/cache_top_dft.v` it writes the real data array
 through the same clock gates, so it tests the clock gates too: forcing one gate off makes MBIST fail.
+
+## Logic diagnosis (from a tester fail log back to the defect)
+
+[`diag/`](diag/): `prepare_diagnostics_setup` injects random logic faults and `report_fault_effects` writes the fail log each one
+would cause on a tester (Chip-Pad-Pattern format: failing scan-out pin, pattern, scan offset, value). Modus `diagnose_failset_logic`
+needs a Modus_Diagnostics license the school does not have, so `fault_dict_diag.py` does cause-effect diagnosis by fault-dictionary
+matching, scored like commercial tools: TFSF (tester fail, simulation fail), TFSP (tester fail, simulation pass) and TPSF (tester pass,
+simulation fail).
+
+| Fail log | Injected fault found at | TFSF / TFSP / TPSF |
+|---|---|---|
+| Complete (74 failures) | rank 1 of 261 detected candidates | 74 / 0 / 0 |
+| Tester kept only 40% (30 failures) | rank 1 | 30 / 0 / 44 |
+
+With a truncated log TPSF grows (predicted failures the tester did not record) but TFSP stays 0: every recorded failure is still
+explained, which is why diagnosis weighs TFSP most. Limitation: the 400 decoy candidates are random faults, which are easy to tell
+apart; real tools pick candidates by back-tracing from the failing outputs, where neighbouring and equivalent faults are much closer.
+

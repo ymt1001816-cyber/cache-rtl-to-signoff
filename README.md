@@ -71,6 +71,7 @@ flowchart LR
 | Transition faults | Launch-on-shift 70.9% vs launch-on-capture 66.6%, with 41% fewer patterns |
 | Clock gating vs scan | No test enable: 30 of 32 chains cannot shift, 84.3%. Test enable tied to 1: 99.84%. Test enable driven by scan_en (the enable logic is tested in capture): 99.99%, 17 untested faults |
 | MBIST | March C- (2,561 cycles) inside the design; finds memory faults and a stuck clock gate |
+| Diagnosis | From a tester fail log back to the defect: injected faults ranked first among 261 candidates by fault-dictionary matching, also with only 40% of the failures logged |
 
 **Low power** ([details](synthesis/README.md))
 
