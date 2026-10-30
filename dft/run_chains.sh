@@ -40,7 +40,7 @@ report_fault_statistics -workdir \$W -testmode FULLSCAN
 exit
 EOF
   ( cd $D && env -i HOME=$HOME USER=$USER LOGNAME=$USER SHELL=/bin/bash TERM=dumb \
-      PATH=/ECEnet/Apps1/linux/Cadence/MODUS251/bin:/usr/bin:/bin CDS_LIC_FILE=5280@cadencelm.coe.neu.edu \
+      PATH=/ECEnet/Apps1/linux/Cadence/MODUS251/bin:/usr/bin:/bin CDS_LIC_FILE=$CDS_LIC_FILE \
       timeout 7200 modus -batch -disable_user_startup -files atpg.tcl > atpg.out 2>&1 )
   echo "N=$N exit $?"
 done

@@ -21,7 +21,7 @@ report_fault_statistics -workdir \$W -testmode FULLSCAN -experiment logic
 exit
 T
 ( cd $D && env -i HOME=$HOME USER=$USER LOGNAME=$USER SHELL=/bin/bash TERM=dumb \
-    PATH=/ECEnet/Apps1/linux/Cadence/MODUS251/bin:/usr/bin:/bin CDS_LIC_FILE=5280@cadencelm.coe.neu.edu \
+    PATH=/ECEnet/Apps1/linux/Cadence/MODUS251/bin:/usr/bin:/bin CDS_LIC_FILE=$CDS_LIC_FILE \
     timeout 5400 modus -batch -disable_user_startup -files atpg.tcl > atpg.out 2>&1 )
 echo "[$N] modus exit $?"
 grep -E "ERROR|^ *[0-9]+ (ERROR|WARNING) \(TSV|TSV-[0-9]+" $D/atpg.out | sort | uniq -c | sort -rn | head -8

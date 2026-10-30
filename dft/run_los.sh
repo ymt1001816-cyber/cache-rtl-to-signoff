@@ -9,7 +9,7 @@ report_fault_statistics -workdir mdb -testmode FULLSCAN -experiment los
 exit
 T
 env -i HOME=$HOME USER=$USER LOGNAME=$USER SHELL=/bin/bash TERM=dumb \
-  PATH=/ECEnet/Apps1/linux/Cadence/MODUS251/bin:/usr/bin:/bin CDS_LIC_FILE=5280@cadencelm.coe.neu.edu \
+  PATH=/ECEnet/Apps1/linux/Cadence/MODUS251/bin:/usr/bin:/bin CDS_LIC_FILE=$CDS_LIC_FILE \
   timeout 7200 modus -batch -disable_user_startup -files los.tcl > los.out 2>&1
 echo "exit $?"; grep -E "^Total Dynamic|ERROR|WARNING \(TDA" los.out | tail -6
 awk '/INFO \(TDA-220\): +[0-9]+ +[0-9]+/{l=$0} END{print "last:", l}' los.out
