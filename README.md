@@ -3,36 +3,78 @@
 [![regression](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/ci.yml/badge.svg)](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/ci.yml)
 [![openroad](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/openroad.yml/badge.svg)](https://github.com/ymt1001816-cyber/cache-rtl-to-signoff/actions/workflows/openroad.yml)
 
-A 1 KB direct-mapped, write-through cache taken from Verilog RTL to a DRC-clean, LVS-correct layout in FreePDK45,
-with a full verification stack (UVM, cocotb, SVA, formal, LEC, gate-level/SDF simulation) and design-for-test (scan, ATPG, MBIST).
+A 1 KB direct-mapped, write-through cache designed in Verilog and taken all the way to a DRC-clean, LVS-correct layout in FreePDK45 (45 nm),
+then verified, made testable and made low-power: one design, every step of a chip flow.
 
 Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Meiyu Kuo
 
-<p align="center"><img src="docs/figures/fig_layout_run4.png" width="420" alt="Placed and routed cache layout"></p>
+<p align="center"><img src="docs/figures/fig_layout_run4.png" width="380" alt="Placed and routed cache layout"></p>
 
-## Results at a glance
+## Highlights
 
-| Area | Result |
+- **Verified three independent ways.** UVM (100% functional coverage, 4/4 planted bugs caught), cocotb with a Python reference model that checks memory traffic as well as data, and SymbiYosys k-induction proofs. LEC confirms RTL = netlist = layout.
+- **Signed off, not just placed.** DRC 0, LVS correct, timing at SS / TT / FF corners, IR drop and EM, antenna and a custom ERC deck. [Four bugs](#bugs-that-only-signoff-found) were invisible until signoff.
+- **Low power that stays testable.** Latch-based clock gating cuts real-activity power by **86%** (33.8 → 4.56 mW). It also broke scan: coverage fell to **84.3%**. A test-enable clock gate brings it back to **99.84%**, with a March C- MBIST built in.
+- **Reproducible.** 16 open-source checks run on every push. The open-source layout (OpenROAD) runs in GitHub Actions in about 20 minutes.
+
+## Design
+
+<p align="center"><img src="docs/figures/fig_block_diagram.png" width="640" alt="Cache block diagram"></p>
+
+64 lines × 16-byte blocks, 4-state controller (IDLE, COMPARE, REFILL, WRITE_MEM), 100 MHz.
+An AXI4-Lite slave wrapper puts the cache on a standard bus.
+
+## Flow
+
+```mermaid
+flowchart LR
+  RTL["RTL<br/>Verilog"] --> VER["Verification<br/>UVM · cocotb · SVA<br/>formal · coverage"]
+  RTL --> SYN["Synthesis<br/>Genus · Yosys"]
+  SYN --> LEC1["LEC<br/>Conformal"]
+  SYN --> DFT["DFT<br/>scan · ATPG · MBIST"]
+  SYN --> PNR["Place & route<br/>Innovus · OpenROAD"]
+  PNR --> SO["Signoff<br/>DRC · LVS · ERC · antenna<br/>STA corners · IR / EM · SDF sim"]
+  RTL --> LP["Low power<br/>clock gating"]
+  LP --> SYN
+```
+
+## Results
+
+**Verification** ([details](verification/README.md), [AXI](axi/README.md))
+
+| Check | Result |
 |---|---|
-| Functional verification | UVM testbench: 100% functional coverage, 20/20 random seeds pass, 4/4 planted bugs caught |
-| cocotb | Python testbench: memory latency randomized 1–4 cycles, a Python reference model predicts every hit and miss and the scoreboard checks data **and memory traffic** (0 or 4 reads per read, exactly 1 write per write); functional coverage must close or the test fails. Same tests pass on the original, clock-gated and DFT RTL (~6,900 checks each); a planted write-allocate bug fails |
-| Formal | SymbiYosys k-induction proves no-write-allocate, bounded latency, one memory operation at a time |
-| Code coverage | Branch and expression 100%, toggle 99.2% (Verilator) |
-| Equivalence | Conformal LEC: RTL = netlist = layout netlist (8,725 points); scan netlist = RTL with scan disabled |
-| Layout | Innovus DRC 0, Calibre LVS CORRECT, 274,294 µm² chip |
-| Timing | Passes SS / TT / FF corners at 100 MHz (SS setup +1.10 ns, worst hold +0.24 ns) |
-| Power integrity | IR drop 6.1% → 2.2% after adding metal6 stripes; EM 0.50 MA/cm² (limit 1.8) |
-| Extra signoff | Antenna clean (SKY130 ratios), custom Calibre ERC clean |
-| DFT | Scan insertion script, 1–32 chains: 99.99% stuck-at coverage; 32 chains cut tester cycles 31× (11.1 M → 0.35 M); patterns verified in gate-level simulation (0 miscompares; a planted defect gives 151 failing tests); transition faults: launch-on-capture 66.6%, launch-on-shift 70.9% with 41% fewer patterns |
-| AXI4-Lite | Slave wrapper around the cache; testbench randomizes AW/W order and ready delays, checks VALID/READY rules and SLVERR on partial writes: 0 violations; the same rules as SVA (bind, Xcelium) and as a SymbiYosys k-induction proof with the cache abstracted away |
-| AXI UVM | AXI4-Lite master agent (driver, monitor) plugged into the original UVM environment: sequences, scoreboard and coverage reused unchanged; 3 seeds PASS (5,145–5,256 checks), 100% coverage, 0 SVA failures; a planted data bug fails all 5,145 reads |
-| MBIST | March C- controller (10N = 2,561 cycles) catches stuck-at, transition, coupling and address-decoder faults |
-| Power | 33.8 mW with real switching activity, 98% of it following the clock |
-| Clock gating | Latch-based clock gates in RTL (one per word), taken through layout: **real-activity power 33.8 → 4.56 mW (−86%)**, chip area −47%, SS/TT/FF setup and hold pass, SDF simulation passes, LVS correct, LEC equivalent (incl. 256 latches). Open item: 314 Calibre Well.2 errors at filler-cell boundaries and 20 ERC well/net results, not seen in the same-density layout without clock gating |
-| Scan-compatible clock gating | The clock gates block scan shift: with clock gating and no test enable, 30 of 32 scan chains cannot be loaded and stuck-at coverage drops to **84.3%**. Adding a test enable to each clock gate (like an industry ICG cell) brings all 32 chains back and coverage to **99.84%** (8,659 scan cells; LEC equivalent, 8,998 points). Genus mapped the gated data flops to falling-edge flops, so the scan script keeps falling- and rising-edge flops in separate chains |
-| MBIST in the design | The March C- controller is built into the clock-gated cache and writes the real data array through the same clock gates (test mode mux); it passes in 2,561 cycles and also finds a clock gate stuck off |
-| Open-source layout | The same RTL taken from RTL to GDS with OpenROAD-flow-scripts (Yosys, OpenROAD, TritonRoute) on Nangate45, another cell library on the same FreePDK45 process, in GitHub Actions (~20 min, no license): routing DRC 0, setup slack +6.42 ns at 100 MHz, no hold violations, built-in equivalence checks pass, 29,266 cells (8,646 flip-flops), 74,719 µm² of cells at 41% utilization. Numbers differ from the Cadence flow mainly because the cell libraries differ |
-| Denser floorplan | Placement density 0.6 → 0.75: chip area −19% (274,294 → 221,402 µm²) with all signoff checks still clean |
+| UVM | 100% functional coverage, 20/20 seeds pass, 4/4 planted bugs caught; AXI4-Lite agent reuses the same sequences, scoreboard and coverage |
+| cocotb | Random memory latency, reference model checks every hit/miss and the memory traffic; passes on the original, clock-gated and DFT RTL |
+| Formal | k-induction proofs: no-write-allocate, bounded latency, AXI4-Lite handshake rules for any cache behavior |
+| Code coverage | Branch and expression 100%, toggle 99.2% |
+| Equivalence | RTL = netlist = layout netlist (8,725 points); scan and DFT netlists equivalent too |
+
+**Physical design and signoff** ([details](layout/README.md), [open-source flow](openroad/README.md))
+
+| Check | Result |
+|---|---|
+| Layout | DRC 0, LVS correct, 274,294 µm² (221,402 µm² at higher density, still clean) |
+| Timing | SS / TT / FF corners pass at 100 MHz (SS setup +1.10 ns, worst hold +0.24 ns); SDF gate-level simulation passes |
+| Power integrity | IR drop 6.1% → 2.2% with metal6 stripes; EM 0.50 MA/cm² (limit 1.8) |
+| Extra signoff | Antenna clean, custom ERC clean |
+| Open-source flow | OpenROAD on Nangate45: routing DRC 0, setup +6.42 ns, no hold violations |
+
+**Design for test** ([details](dft/README.md))
+
+| Check | Result |
+|---|---|
+| Scan + ATPG | 99.99% stuck-at; 32 chains cut tester cycles 31×; patterns pass gate-level simulation |
+| Transition faults | Launch-on-shift 70.9% vs launch-on-capture 66.6%, with 41% fewer patterns |
+| Clock gating vs scan | No test enable: 30 of 32 chains cannot shift, 84.3%. With test enable: 99.84%, LEC equivalent |
+| MBIST | March C- (2,561 cycles) inside the design; finds memory faults and a stuck clock gate |
+
+**Low power** ([details](synthesis/README.md))
+
+| Check | Result |
+|---|---|
+| Clock gating | Real-activity power 33.8 → 4.56 mW (−86%), chip area −47%, all corners, SDF, LVS and LEC pass |
+| Open item | 314 Calibre Well.2 errors at filler-cell boundaries and 20 ERC results in the clock-gated layout only |
 
 ## Bugs that only signoff found
 
@@ -46,34 +88,32 @@ Course project, EECE 7353 VLSI Design, Northeastern University, Fall 2026 · Mei
 16 cache variants (4 sizes × flip-flop or SRAM storage × direct-mapped or 2-way) were synthesized, plus a write-back version; SRAM versions use OpenRAM macros.
 An SRAM-based cache is 5.4× smaller but its read data arrives late in the cycle; a 2-way SRAM cache was the best balance.
 
-<p align="center"><img src="docs/figures/fig_design_space.png" width="480" alt="Design space: area vs AMAT"></p>
+<p align="center"><img src="docs/figures/fig_design_space.png" width="460" alt="Design space: area vs AMAT"></p>
 
 ## Repository layout
 
 | Folder | Contents |
 |---|---|
-| `rtl/` | Cache RTL (direct-mapped, 2-way, write-back, SRAM variants, clock-gated version, DFT version with test-enable clock gates and MBIST) |
-| `verification/` | Self-checking testbench, UVM environment + SVA, cocotb testbench, SymbiYosys formal, code coverage, verification plan |
-| `model/` | Python reference model (miss counts, AMAT, DRAM energy) |
-| `synthesis/` | Genus script, constraints, SAIF power, LEC |
-| `layout/` | Innovus script (MMMC corners, power stripes), antenna LEF generator, IR-drop grid solver, ERC deck, signoff pipeline |
-| `axi/` | AXI4-Lite slave wrapper, protocol-checking testbench, SVA, formal proof, UVM agent (`axi/uvm/`) |
-| `dft/` | Scan insertion, Modus ATPG flow, pattern simulation, MBIST (controller, fault-injecting memory, testbench) |
-| `openroad/` | OpenROAD-flow-scripts config, SDC and result summary (workflow: `.github/workflows/openroad.yml`) |
-| `docs/figures/` | Figures from the report |
+| [`rtl/`](rtl/) | Cache RTL: direct-mapped, 2-way, write-back, SRAM variants, clock-gated, DFT (test-enable clock gates + MBIST) |
+| [`verification/`](verification/README.md) | Self-checking testbench, UVM + SVA, cocotb, formal, code coverage, verification plan |
+| [`axi/`](axi/README.md) | AXI4-Lite wrapper, protocol testbench, SVA, formal proof, UVM agent |
+| [`synthesis/`](synthesis/README.md) | Genus script, constraints, power with real activity, LEC, clock gating |
+| [`layout/`](layout/README.md) | Innovus script, antenna LEF, IR-drop solver, ERC deck, signoff pipeline |
+| [`dft/`](dft/README.md) | Scan insertion, ATPG, pattern simulation, MBIST, clock gating + scan |
+| [`openroad/`](openroad/README.md) | Open-source RTL-to-GDS (OpenROAD-flow-scripts) |
+| [`model/`](model/) | Python cache model (miss counts, AMAT, DRAM energy) |
+| [`ci/`](ci/) | Open-source regression run by GitHub Actions |
 
-## Run it yourself (open-source tools only)
+## Run it yourself
 
 ```bash
-ci/regress.sh all     # Icarus Verilog + SymbiYosys: testbench (original, clock-gated, DFT), cocotb, MBIST, DFT test-mode checks, AXI, formal
+ci/regress.sh all     # Icarus Verilog, cocotb, SymbiYosys (OSS CAD Suite): 16 checks
 ```
 
-The same script runs in GitHub Actions on every push (badge above). The open-source layout runs in GitHub Actions too (Actions → openroad → Run workflow; the GDS and reports are saved as an artifact). The Cadence flows (synthesis, layout, signoff, ATPG) need a licensed install.
+The same script runs on every push. The open-source layout runs from **Actions → openroad → Run workflow** (GDS and reports are saved as an artifact).
+The Cadence flows need a licensed install; PDK and standard cells (FreePDK45, OSU gscl45nm) are not included, and scripts use the university's tool paths.
 
-## Tools
-
-Cadence Xcelium, Genus, Innovus, Conformal, Modus, Spectre · Siemens Calibre · cocotb · SymbiYosys · OpenROAD-flow-scripts · Verilator · Icarus Verilog · OpenRAM · Python.
-PDK and standard cells (FreePDK45, OSU gscl45nm) are not included. Scripts use the university's tool paths; adjust them for another setup.
+**Tools:** Cadence Xcelium, Genus, Innovus, Conformal, Modus, Spectre · Siemens Calibre · cocotb · SymbiYosys · OpenROAD-flow-scripts · Verilator · Icarus Verilog · OpenRAM · Python
 
 ## My role and AI use
 
