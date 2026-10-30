@@ -1,0 +1,30 @@
+# openroad.yml : open-source RTL-to-GDS (OpenROAD-flow-scripts, nangate45) for cache_top
+#   runs on demand (Actions tab -> openroad -> Run workflow) and when openroad/ or the RTL changes
+name: openroad
+on:
+  workflow_dispatch:
+  push:
+    paths: ['openroad/**', 'rtl/cache_top.v', '.github/workflows/openroad.yml']
+jobs:
+  rtl2gds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    container: openroad/orfs:26Q4-229-g64939f371     # pinned ORFS image: Yosys + OpenROAD + KLayout
+    steps:
+      - uses: actions/checkout@v4
+      - name: RTL to GDS
+        run: |
+          cd /OpenROAD-flow-scripts && [ -f env.sh ] && source ./env.sh
+          make -C flow DESIGN_CONFIG=$GITHUB_WORKSPACE/openroad/config.mk REPO=$GITHUB_WORKSPACE
+      - name: Collect results
+        if: always()
+        run: |
+          F=/OpenROAD-flow-scripts/flow; O=$GITHUB_WORKSPACE/build/openroad; mkdir -p $O
+          for d in reports logs results; do cp -r $F/$d/nangate45/cache_top/base $O/$d 2>/dev/null || true; done
+          bash openroad/summary.sh $O | tee $O/summary.txt
+          echo '```' >> $GITHUB_STEP_SUMMARY; cat $O/summary.txt >> $GITHUB_STEP_SUMMARY; echo '```' >> $GITHUB_STEP_SUMMARY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: openroad-cache_top
+          path: build/openroad
