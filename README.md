@@ -120,11 +120,15 @@ The Cadence flows need a licensed install; PDK and standard cells (FreePDK45, OS
 
 **Tools:** Cadence Xcelium, Genus, Innovus, Conformal, Modus, Spectre · Siemens Calibre · cocotb · SymbiYosys · OpenROAD-flow-scripts · Verilator · Icarus Verilog · OpenRAM · Python
 
-## Related project
+## Related projects
 
 [Async FIFO: a CDC bug that simulation cannot see](https://github.com/ymt1001816-cyber/async-fifo-cdc): a two-clock FIFO
 where a binary-pointer crossing bug passes every cocotb simulation but is caught by formal verification with a
 metastability model; the Gray-code design is proven with k-induction, and the crossings are constrained for STA.
+
+[SRAM built-in self-repair](https://github.com/ymt1001816-cyber/sram-bisr): this project's March C- MBIST reused in an
+SRAM that repairs itself: redundancy analysis picks the faulty rows, a remap sends them to spare rows, and a retest checks
+the repair; the repair logic is proven with k-induction.
 
 ## My role and AI use
 
