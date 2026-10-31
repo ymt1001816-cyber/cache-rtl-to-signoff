@@ -120,6 +120,12 @@ The Cadence flows need a licensed install; PDK and standard cells (FreePDK45, OS
 
 **Tools:** Cadence Xcelium, Genus, Innovus, Conformal, Modus, Spectre · Siemens Calibre · cocotb · SymbiYosys · OpenROAD-flow-scripts · Verilator · Icarus Verilog · OpenRAM · Python
 
+## Related project
+
+[Async FIFO: a CDC bug that simulation cannot see](https://github.com/ymt1001816-cyber/async-fifo-cdc): a two-clock FIFO
+where a binary-pointer crossing bug passes every cocotb simulation but is caught by formal verification with a
+metastability model; the Gray-code design is proven with k-induction, and the crossings are constrained for STA.
+
 ## My role and AI use
 
 I wrote the RTL, the testbench and UVM components, the SVA properties, the clock-gating RTL, the MBIST controller, the DFT version (test-enable clock gates, MBIST integration), the AXI4-Lite wrapper, its SVA and formal properties, the AXI UVM agent, the cocotb reference model, driver, scoreboard and random test, the coverage model and the closure stimulus, and the CSR block with its UVM register model and adapter.
